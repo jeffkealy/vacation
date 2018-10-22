@@ -1,0 +1,71 @@
+@charset "UTF-8";
+
+@import url(vendor/normalize);
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700');
+.hidden{
+  display: none;
+}
+body{
+  background: rgb(195, 224, 195);
+  margin: 0 auto;
+  max-width: 800px;
+  font-family: 'Open Sans', sans-serif;
+}
+header{
+  text-align: center;
+  padding: 15px;
+}
+footer{
+  text-align: center;
+}
+main{
+  text-align: center;
+  margin: 0 auto;
+  max-width: 400px;
+
+}
+.people{
+  list-style: none;
+  padding: 0px;
+}
+.people-button{
+  width: 200px;
+  padding: 20px;
+  margin-bottom: 5px;
+}
+.hours-remaining h3{
+  margin: 4px auto;
+}
+.hours-remaining h2{
+  margin: 4px auto;
+}
+.view-entry-table-title{
+  margin: 0;
+}
+.view-entry-table{
+  margin: 0 auto;
+}
+.view-entry-table td, .view-entry-table th{
+  padding-left: 0;
+  padding-right: 10px;
+  text-align: left;
+}
+.view-entry button{
+  margin-left: -10px;
+}
+.calendar{
+  display: inline-block;
+  vertical-align: top;
+
+}
+.add-entry h3{
+  margin-bottom: 0
+}
+.add-entry-title{
+  margin-bottom: 0;
+}
+.add-entry-button{
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+}
