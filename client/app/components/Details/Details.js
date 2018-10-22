@@ -28,9 +28,7 @@ class Details extends Component {
   }
 
   componentDidMount() {
-
     let id = this.props.person
-    console.log("NAME", id);
     fetch(`/api/person/${id}`, {method: 'PUT'})
       .then(res => res.json())
       .then(json => {
@@ -78,8 +76,6 @@ class Details extends Component {
       endDate: this.state.endDate,
       hoursUsed: this.state.hoursToBeUsed
     }
-    console.log("Entry to send for", this.props.person.name, data);
-    console.log(JSON.stringify(data));
     fetch(`/api/people/${id}/entry`,
       { method: 'PUT',
         headers: {'Accept': 'application/json, text/plain, */*',
@@ -97,7 +93,6 @@ class Details extends Component {
 
     const entryID = this.state.person.entries[i]._id;
     const id = this.state.person._id
-    console.log("delete this",id, entryID);
     fetch(`/api/people/${id}/delete/${entryID}`,
       {
         method:'DELETE'
@@ -111,7 +106,6 @@ class Details extends Component {
     });
   }
   render() {
-    console.log("RENDER");
     return (
       <>
           <div className="details">

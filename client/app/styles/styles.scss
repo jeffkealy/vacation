@@ -6,7 +6,11 @@
   display: none;
 }
 body{
-  background: rgb(195, 224, 195);
+  background-color: #f6f6f6;
+  background-color: rgb(195, 224, 195);
+  background:  url(../../public/assets/img/vacation.jpg), linear-gradient(to bottom, rgb(195, 224, 195), rgb(195, 224, 195));
+  background-size: auto;
+  background-repeat: no-repeat;
   margin: 0 auto;
   max-width: 800px;
   font-family: 'Open Sans', sans-serif;
@@ -22,6 +26,8 @@ main{
   text-align: center;
   margin: 0 auto;
   max-width: 400px;
+  padding: 20px;
+
 
 }
 .people{

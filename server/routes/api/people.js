@@ -5,8 +5,6 @@ module.exports = (app) => {
     Person.find({},{name: 1})
     .exec()
     .then((names)=>{
-      console.log("GET", names);
-
       res.json(names);
     })
   })
