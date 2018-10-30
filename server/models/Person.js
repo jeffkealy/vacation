@@ -3,11 +3,13 @@ const mongoose = require('mongoose');
 const PersonSchema = new mongoose.Schema({
     name: String,
     vacationHoursRemaining: Number,
-    additionalHoursPerCycle: Number,
+    vacationHoursPerYear: Number,
+    beginDate:Date,
     entries:[{
       startDate: Date,
       endDate: Date,
-      hoursUsed: Number
+      hoursUsed: Number,
+      note: String
     }]
 });
 

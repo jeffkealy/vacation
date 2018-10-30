@@ -2,9 +2,12 @@ const Person = require('../../models/Person');
 
 module.exports = (app) => {
   app.get('/api/person/names', (req, res, next) =>{
-    Person.find({},{name: 1})
+    Person.find({}
+      // {name: 1}
+    )
     .exec()
     .then((names)=>{
+      console.log(names);
       res.json(names);
     })
   })
@@ -21,10 +24,22 @@ module.exports = (app) => {
       )
       .catch((err) => next(err));
   });
-
+//add entry
   app.put('/api/people/:id/entry', (req, res, next) => {
-    console.log("put", req.params.id, req.body);
-    Person.findOneAndUpdate({ _id: req.params.id},{$push: {entries:req.body}},{new:true})
+    console.log("PUT", req.params.id, req.body);
+    Person.findOneAndUpdate({ _id: req.params.id},{$set:{vacationHoursRemaining:req.body.vacationHoursRemaining},$push: {entries:req.body.entry}},{new:true})
+      .exec()
+      .then((person) => {
+        console.log("PUT RES",person);
+        res.json(person)
+
+      })
+      .catch((err) => {console.log("ERROR");next(err)});
+  });
+  app.put('/api/people/:id/hoursPerCycle/:hours', (req, res, next) => {
+    console.log("hoursPerCycle", req.params.id, req.params.hours);
+    var hours = req.params.hours*8
+    Person.findOneAndUpdate({ _id: req.params.id},{vacationHoursPerYear:hours} ,{new:true})
       .exec()
       .then((person) => {
         console.log(person);
@@ -33,9 +48,10 @@ module.exports = (app) => {
       })
       .catch((err) => {console.log("ERROR");next(err)});
   });
-  app.delete('/api/people/:id/delete/:entryID', (req,res,next)=>{
-    console.log("REQBODY",req.params.id,req.params.entryID);
-    Person.findOneAndUpdate({_id: req.params.id}, {$pull:{entries: {_id:req.params.entryID}}},{new:true})
+//delete entry
+  app.delete('/api/people/:id/delete', (req,res,next)=>{
+    console.log("REQBODY",req.params.id,req.body.entryID);
+    Person.findOneAndUpdate({_id: req.params.id}, {$set:{vacationHoursRemaining:req.body.vacationHoursRemaining},$pull:{entries: {_id:req.body.entryID}}},{new:true})
     .exec()
     .then((entry)=>{
       console.log("DELETED", entry);

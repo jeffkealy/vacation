@@ -100,9 +100,9 @@ class Home extends Component {
               </li>
             ))}
           { this.state.showDetails ?
-              <div>
-                <button onClick={() => this.setState({showDetails: false})}>Back</button>
-                <Details person={this.state.person.name}/>
+              <div className="details-container">
+                <button className="back-button" onClick={() => this.setState({showDetails: false})}>Back</button>
+                <Details person={this.state.person} people={this.state.people}/>
               </div>
               : null
           }
