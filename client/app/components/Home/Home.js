@@ -8,27 +8,53 @@ class Home extends Component {
 
     this.state = {
       people: [],
-      showDetails: false
+      showDetails: false,
+      monthlyAccrualAdded: false,
+      updateHours: []
     };
     this.getDetails = this.getDetails.bind(this);
+    this.addMonthlyAccrual = this.addMonthlyAccrual.bind(this);
+
   }
 
   componentDidMount() {
-    fetch(`/api/person/names`)
+    fetch(`/api/updateHours`)
     .then(res => res.json())
-    .then(json =>{
-      console.log("GET", json);
+    .then(json=>{
+      console.log("GET TIME", json);
       this.setState({
         people:json
       });
+      fetch(`/api/person/names`)
+      .then(res => res.json())
+      .then(json =>{
+        console.log("GET People", json);
+        this.setState({
+          people:json
+        });
+        this.addMonthlyAccrual();
+
+      })
     });
   }
+
   getDetails(person){
     console.log("person details", person);
     this.setState({
       showDetails: !this.state.showDetails,
       person: person
     })
+
+
+  }
+  addMonthlyAccrual(){
+    let today = new Date();
+    let dayOfMonth = today.getDate();
+    console.log("addMonthlyAccrual", dayOfMonth);
+
+    if (dayOfMonth === 7 ) {
+      console.log("first of the month");
+    }
   }
   // newCounter() {
   //   fetch('/api/people', { method: 'POST' })

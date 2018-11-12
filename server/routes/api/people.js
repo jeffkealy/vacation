@@ -1,6 +1,7 @@
 const Person = require('../../models/Person');
 
 module.exports = (app) => {
+
   app.get('/api/person/names', (req, res, next) =>{
     Person.find({}
       // {name: 1}

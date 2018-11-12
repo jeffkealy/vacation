@@ -5,6 +5,10 @@ const PersonSchema = new mongoose.Schema({
     vacationHoursRemaining: Number,
     vacationHoursPerYear: Number,
     beginDate:Date,
+    oneOffAdditions:[{
+      add:Number,
+      note: String
+    }],
     entries:[{
       startDate: Date,
       endDate: Date,
