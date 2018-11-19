@@ -2,121 +2,43 @@
 
 @import url('vendor/normalize');
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,700');
-.hidden{
-  display: none;
-}
-body{
-  background-color: #f6f6f6;
-  background-color: rgb(195, 224, 195);
-  background:  url(../../public/assets/img/vacation.jpg), linear-gradient(to bottom, rgb(195, 224, 195), rgb(195, 224, 195));
-  background-size: auto;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  font-family: 'Montserrat', sans-serif;
-}
+
+$action-bkrnd: #49c5b6;
+
+
 h3,h4{
   font-weight: inherit;
 }
-header{
-  text-align: center;
-  padding: 15px;
-}
-footer{
-  text-align: center;
-  width: 100%;
-  margin: 0 auto;
-  max-width: 500px;
+.container{
+  background-color: rgba(0, 0, 0, 0.65);
+  border-radius: 40px;
+  border:1px solid #fff;
+  margin: 54px auto 0;
+  padding: 0px 20px 15px;
 
 }
-footer p{
-  width: 100%;
-  padding: 20px 0;
+.content{
+  margin: -50px 0 10px 0;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  padding: 35px 0 30px;
+  border-radius: 50px;
 }
-main{
+.white-header{
+  margin: -35px auto 10px;
   text-align: center;
-  margin: 0 auto;
-  max-width: 460px;
-  padding: 20px;
-
-
+  h2, h3{
+    color: #000;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 50px;
+    display: inline-block;
+    font-weight: 700;
+    margin: 0;
+  }
 }
 button{
   cursor: pointer;
   border-radius: 2px;
-}
-.hidden{
-  display: none;
-}
-:focus{
-  outline: none;
-}
-.admin{
-  max-width: 320px;
-  text-align: left;
-  margin: 0 auto 8px;
-  border: 1px dotted;
-  padding-bottom: 20px
-}
-.admin h2, .admin h3{
-  text-align: center;
-
-}
-.admin-input-container{
-  max-width: 240px;
-  margin:auto;
-}
-.admin label{
-  display: inline-block;
-  margin: 0 8px 8px 0;
-  text-align: left;
-
-}
-.admin .label{
-  display: inline-block;
-  padding-right: 5px;
-  width: 60px;
-}
-.admin input{
-  width: 40px;
-}
-.people{
-  list-style: none;
-  margin: 0;
-  padding: 0px;
-}
-.people-button{
-  min-width: 200px;
-  padding: 20px;
-  margin-bottom: 10px;
-  background: #fff;
-  color: #000;
-  border:1px solid #fff;
-  border-radius: 50px;
-  font-size: 20px;
-  box-shadow:  0px 0px 16px 1px rgba(0, 0, 0, 0.5);
-  -webkit-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
-
-}
-
-.people-button:hover{
-  outline: none;
-  transform: scale(1.1);
-}
-.people-button:active{
-  box-shadow: 0px 0px 16px 2px rgba(0, 0, 0, 1);
-  opacity: .8;
-
-}
-.details-container{
-  color: #e8e8e8;
-  background-color: rgba(0, 0, 0, 0.6);
-  padding: 30px 0px;
-  border-radius: 10px;
-
-}
-.details.title{
-
 }
 .back-button{
   background-color:#49c5b6;
@@ -126,194 +48,470 @@ button{
   border-radius: 50px;
   min-width: 120px;
   font-size: 20px;
-  font-weight: 700px;
+  font-weight: 700;
   text-transform: uppercase;
   -webkit-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
-.back-button:active{
-  background-color:#038074;
+input{
+  border-radius: 50px;
+  margin: 5px auto;
+  background-color: #fff;
+  padding: 10px 20px;
+  display: block;
 }
-.vacation-days-details{
-  margin-top: 54px;
-  padding: 0px 0 15px;
-  border: 1px solid #000;
-  background-color: rgba(0, 0, 0, 0.65);
-
-  .vacation-days-details-header{
-    color: #000;
-    margin:-34px auto 10px;
-    padding: 20px;
-    display: block;
-    max-width: 180px;
-    background-color: #fff;
-    border-radius: 50px;
-  }
-  .detail-group.first{
-    .detail-container{
-      display: inline-block;
-      margin: 0 5px;
-      min-width: 86px;
-      font-weight: 300;
-    }
-  }
-  .detail-group.second{
-    margin: 5px 20px;
-    padding: 0 0 20px;
-    h2{
-
-    }
-    .detail-container{
-      display: inline-block;
-      padding: 0 5px;
-      min-width: 183px;
-    }
-  }
-  h3{
-    margin: 4px auto;
-  }
-  h4{
-    margin: 4px auto;
-  }
+.hidden{
+  display: none;
 }
-.view-entry {
-  background-color: rgba(0, 0, 0, 0.65);
-  margin: 54px auto 0;
-  padding: 0 0 10px;
-  .show-table{
-    margin: -34px auto 10px;
-    color: #000;
-    background-color: #fff;
-    padding: 20px ;
-    text-align: left;
-    border:none;
-    font-weight: 700;
-    border-radius: 50px;
-    text-align: center;
-    min-width: 220px;
-    span{
-
-      font-size: 24px;
-
-    }
-  }
-  .arrow{
-    margin-bottom: -2px;
-    padding-left: 8px
-  }
-}
-
-.view-entry-table{
-  margin: 0 auto;
-}
-.view-entry-table td, .view-entry-table th{
-  padding: 5px 10px 5px 0;
-  text-align: left;
-}
-.delete-button{
-  margin: 1px 0 1px -41px;
-  color: #fff;
-  background-color: rgba(0, 0, 0, 0);
-  // border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.69);
-  padding: 0px 8px 3px 8px;
-
-}
-
-td.hours-used{
-  text-align: center;
-}
-
-.delete-button:hover{
+:focus{
   outline: none;
-  background-color: rgba(0, 0, 0, 0.5);
 }
-.add-entry {
-  background-color: rgba(0, 0, 0, 0.65);
-  margin: 54px auto 0;
-  padding: 0 0 10px;
-
-  h3{
-    margin: 8px auto;
-  }
-
-  .add-entry-title{
-    margin: -34px auto 10px;
+body{
+  background-color: rgb(156, 219, 232);
+  // background-color: rgb(195, 224, 195);
+  background:  url(../../public/assets/img/vacation.jpg);
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: 'Montserrat', sans-serif;
+}
+header{
+  text-align: center;
+  padding: 50px 0 30px;
+  a{
+    text-decoration: none;
     color: #000;
+    font-size: 33px;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    margin: 10px 0 0;
+    padding: 20px;
+    border-radius: 50px;
     background-color: #fff;
-    padding: 20px;
-    border:none;
-    font-weight: 700;
-    border-radius: 50px;
-    max-width: 180px;
 
-  }
-  .calendar{
-    display: inline-block;
-    vertical-align: top;
-    margin-top: 0;
-
-  }
-
-  .react-calendar{
-    border-radius: 2px;
-    max-width: 350px;
-    width: auto;
-
-  }
-  .add-entry-preview{
-    margin: 10px auto;
-    h3{
-      text-shadow: 1px 3px 7px #000;
-    }
-    .hours-used{
-      margin: 10px auto;
-      max-width: 150px;
-      padding: 10px 0 10px;
-      font-weight: bold;
-      background-color: #fff;
-      color: #000;
-      border-radius: 2px;
-      text-transform: capitalize;
-
-    }
-    .note-input-label{
-      text-align: center;
-      display: block;
-      margin: 0px 0 5px;
-      text-transform: capitalize;
-    }
-
-  }
-  .add-entry-button{
-    display: block;
-    margin: 20px auto;
-    background-color:#49c5b6;
-    color: rgba(43, 43, 43, 0.78);
-    border: none;
-    padding: 20px;
-    border-radius: 50px;
-    min-width: 120px;
-    font-size: 20px;
-    font-weight: 700px;
-    text-transform: uppercase;
-    -webkit-transition: all 0.3s ease-in-out;
-      transition: all 0.3s ease-in-out;
-
-
-  }
-  .add-entry-button:active{
-    background-color:#038074;
-    -webkit-transition: all 0.3s ease-in-out;
-      transition: all 0.3s ease-in-out;
-
-  }
-  .add-entry-button:focus{
 
   }
 }
-@media screen and (max-width: 400px ){
+
+main{
+  text-align: center;
+  margin: 0 auto;
+  max-width: 560px;
+  .home-container{
+     background-color: rgba(0, 0, 0, 0.6);
+     padding: 80px 40px 20px;
+     color: #e8e8e8;
+     border-radius: 15px;
+     margin: -50px 0 20px;
+    .people-title{
+      background: #000;
+      padding: 20px;
+      display: inline-block;
+      min-width: 200px;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      margin: 0;
+      color: #fff;
+      font-size: 32px;
+    }
+    .people-list{
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 70px 40px 30px;
+      border-radius: 15px;
+      margin: -43px auto 18px;
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      max-width: 400px;
+
+      .people{
+        list-style: none;
+        margin: 0;
+        padding: 0px;
+      }
+    }
+  }
+
+}
+.admin-button.home-button{
+  background-color: rgba(255, 138, 138, 0.90);
+}
+.admin-button.home-button:hover{
+  background-color: rgba(249, 43, 43, 0.87);
+}
+.admin-title{
+
+}
+.admin-container{
+  text-align: left;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  .admin-select-employee{
+    text-align: center;
+    select{
+      margin: 10px 0;
+      background-color: $action-bkrnd;
+      border: none;
+      padding: 10px;
+      option{
+        font-size: 14px;
+        background-color: #fff;
+
+      }
+    }
+  }
+  .employee{
+    .employee-name{
+      margin: 0
+    }
+    .start-date{
+      margin-top: 5px;
+    }
+  }
+  .admin-vacation-hours-per-year{
+    h3{
+      margin: 5px 0;
+    }
+    .vacation-hours-per-year{
+      font-size: 32px;
+      margin: 10px 0;
+    }
+    .hours-per-year-update{
+      text-align: center;
+    }
+  }
+  label{
+    display: inline-block;
+    margin: 0 8px 8px 0;
+    text-align: left;
+
+  }
+  .update-label{
+    padding-right: 6px;
+    display: block;
+    text-align: center;
+
+  }
+  .update-vacation-hours-input{
+    width: 60px;
+    text-align: center;
+    padding:10px 20px;
+    border-radius: 50px;
+    font-size: 16px;
+
+  }
+  .update-vacation-submit-button{
+    font-size: 16px;
+    min-width: 0;
+    padding:10px 20px;
+  }
+  .admin-oneOffs{
+    text-align: center;
+    position: relative;
+
+  }
+  h2, h3, h4{
+    text-align: center;
+  }
+
+}
+
+
+.home-button{
+  min-width: 200px;
+  padding: 20px;
+  margin-bottom: 10px;
+  background: #49c5b6;
+  color: #000;
+  border-radius: 50px;
+  font-size: 20px;
+  border-color: #000;
+  -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+
+}
+
+.home-button:hover{
+  outline: none;
+  transform: scale(1.1);
+
+}
+.home-button:active{
+  box-shadow: 0px 0px 16px 2px rgba(171, 168, 168, 0.9);
+  opacity: .8;
+
+}
+
+.details-container{
+
+    &.admin{
+      margin-bottom: 20px;
+    }
+    .details{
+      margin-bottom: 20px;
+      transition: all 200ms ease-out;
+
+    }
+    .details-title{
+      display: inline-block;
+      margin-block-start: 0;
+      margin-block-end: 0;
+      margin-inline-start: 0px;
+      margin-inline-end: 0px;
+      h3{
+        margin: 0;
+      }
+    }
+
+  .back-button:active{
+    background-color:#038074;
+  }
+
+  .vacation-days-details{
+    padding: 0px 0 15px;
+    border: 1px solid #fff;
+
+    .vacation-days-details-header{
+
+    }
+    .detail-group.top{
+      text-align: center;
+      .detail-container{
+        display: inline-block;
+        margin: 0 auto;
+        padding: 10px 20px;
+        min-width: 122px;
+        font-weight: 300;
+        font-size: 22px;
+        h3{
+          font-weight: 400;
+          font-size: 28px;
+          background-color: rgba(154, 150, 150, 0.83);
+          border-radius: 50px;
+          padding: 15px;
+        }
+      }
+    }
+    .detail-group.accrued{
+      margin: 5px 20px;
+      padding: 0 0 0px;
+      h2{
+        background: #000;
+        padding: 17px 20px;
+        display: inline-block;
+        min-width: 138px;
+        border-radius: 50px;
+        border: 1px solid rgba(255, 255, 255, 0.65);
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+      .detail-container{
+        display: inline-block;
+        padding: 0px 5px;
+        min-width: 117px;
+      }
+      h5{
+        font-size: 12px;
+        font-weight: 300;
+        margin: 0;
+        padding: 0;
+      }
+      .detail-containr-top{
+        padding: 24px 0;
+      }
+    }
+    h3{
+      margin: 4px auto;
+    }
+    h4{
+      margin: 4px auto;
+    }
+  }
+  .view-entry {
+    background-color: rgba(0, 0, 0, 0.65);
+    padding: 0 0 25px;
+    .white-header{
+      margin-top: -7px;
+      .show-table{
+        margin: -34px auto 10px;
+        color: #000;
+        padding: 20px ;
+        text-align: left;
+        border:none;
+        font-weight: 700;
+        border-radius: 50px;
+        text-align: center;
+        min-width: 220px;
+        span{
+
+          font-size: 24px;
+
+        }
+      }
+      .arrow{
+        margin-bottom: -2px;
+        padding-left: 8px
+      }
+    }
+}
+  .view-entry-table{
+    margin: 0 auto;
+    max-width: 420px;
+  }
+  .view-entry-table td, .view-entry-table th{
+    padding: 5px ;
+    text-align: left;
+  }
+  .delete-button{
+    margin: 1px auto ;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0);
+    // border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.69);
+    padding: 0px 8px 3px 8px;
+
+  }
+
+  td.days-used{
+    text-align: center;
+  }
+
+  .delete-button:hover{
+    outline: none;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .add-entry {
+    padding: 0 0 10px;
+
+    h3{
+      margin: 8px auto;
+      display: inline-block;
+      font-weight: 700;
+      padding: 0 8px;
+    }
+
+    .add-entry-title{
+      padding: 20px 33px 20px 40px;;
+      margin-bottom: 10px;
+
+    }
+    .calendar{
+      display: inline-block;
+      vertical-align: top;
+      margin-top: 0;
+
+    }
+
+    .react-calendar{
+      border-radius: 15px;
+      max-width: 350px;
+      width: auto;
+      .calendar-tile{
+        border-radius: 15px;
+      }
+    }
+    .add-entry-preview{
+      margin: 5px 20px;
+      h3{
+        text-shadow: 1px 3px 7px #000;
+      }
+      .hours-used{
+        margin: 5px auto 20px;
+        background: #000;
+        padding: 17px 20px;
+        display: inline-block;
+        min-width: 138px;
+        border-radius: 50px;
+        border: 1px solid rgba(255, 255, 255, 0.65);
+        font-size: 20px;      span{
+        display: inline;
+        }
+        .hours{
+          font-size: 22px;
+          font-weight:400;
+          min-width: 24px;
+          display: inline-block;
+        }
+      }
+      .add-entry-details{
+        margin-top: -50px;
+        border: 1px solid rgba(255, 255, 255, 0.65);
+        padding: 35px 0 30px;
+        border-radius: 50px;
+      }
+
+      .note-input-label{
+        text-align: center;
+        display: block;
+        margin: 0px 0 5px;
+        text-transform: capitalize;
+      }
+      input{
+      }
+
+    }
+    .add-entry-button{
+      display: block;
+      margin: 20px auto;
+      background-color:#49c5b6;
+      color: rgba(43, 43, 43, 0.78);
+      border: none;
+      padding: 20px;
+      border-radius: 50px;
+      min-width: 120px;
+      font-size: 20px;
+      font-weight: 700px;
+      text-transform: uppercase;
+      -webkit-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+
+
+    }
+    .add-entry-button:active{
+      background-color:#038074;
+      -webkit-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+
+    }
+    .add-entry-button:focus{
+
+    }
+  }
+}
+footer{
+  text-align: center;
+  width: 100%;
+  margin: 0 auto;
+  max-width: 500px;
+  p{
+    width: 100%;
+    padding: 20px 0;
+  }
+}
+
+@media screen and (max-width: 560px ){
+  header{
+    padding-top: 23px;
+  }
+  body{
+  }
   main{
-    padding: 0
+    max-width:100%;
+    .home-container{
+      margin-bottom: 0;
+
+    }
+    .details-container{
+      padding: 2px;
+    }
+  }
+  .view-entry-table{
+    margin-left: 5px;
+    font-size: 13px;
+  }
+
+}
+@media screen and (max-width: 375px ){
+  main{
+    .home-container{
+      padding: 80px 3px 20px;
+    }
   }
 }

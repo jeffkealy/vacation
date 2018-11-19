@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 
 const Header = () => (
   <header>
-    <Link to="/">Vacation Tracker</Link>
-    <hr />
+    <Link className="vacation-tracker-title" to="/">Vacation Tracker</Link>
   </header>
 );
 

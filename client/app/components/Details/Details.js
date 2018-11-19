@@ -11,52 +11,62 @@ class Details extends Component {
     super(props);
 
     this.state = {
-      person:{},
       startDate: new Date,
       endDate: new Date(),
-      startDateClicked: false,
-      endDateClicked: false,
       hoursToBeUsed: 0,
       note: "",
       hidden: false,
-      vacationHoursUsed:0
+      vacationHoursUsed:0,
     };
     this.addVacationDates = this.addVacationDates.bind(this);
     this.dateSet = this.dateSet.bind(this);
     this.calculateHours = this.calculateHours.bind(this);
     this.deleteEntry = this.deleteEntry.bind(this);
-    this.updateVacationDaysPerYear = this.updateVacationDaysPerYear.bind(this);
     this.calculateHoursUsed = this.calculateHoursUsed.bind(this);
     this.hoursCalculations = this.hoursCalculations.bind(this);
     this.calculateOneOffAdditions = this.calculateOneOffAdditions.bind(this);
+    this.timezoneOffsetHours = this.timezoneOffsetHours.bind(this);
+
+
   }
 
-  componentWillMount(){
-
-  }
 
   componentDidMount() {
+
     let id = this.props.person.name
     fetch(`/api/person/${id}`, {method: 'PUT'})
       .then(res => res.json())
       .then(json => {
-        console.log("componentDidMount", json);
         this.setState({
           person: json
         });
+        console.log("componentDidMount json", json);
+        this.hoursCalculations(json)
       });
   }
 
   dateSet(date){
-    this.setState({
-      startDate: date[0],
-      endDate:date[1],
-      hoursToBeUsed: this.calculateHours(date)
-
-    })
+    console.log(date);
+    let startDate = date[0]
+    let endDate = date[1]
+    if (new Date(endDate) < new Date(startDate)) {
+      console.log("swapped dates");
+      this.setState({
+        startDate: endDate,
+        endDate:startDate,
+        hoursToBeUsed: Math.abs(this.calculateHours(date))
+      })
+    } else{
+      console.log("normal dates");
+      this.setState({
+        startDate: date[0],
+        endDate:date[1],
+        hoursToBeUsed: Math.abs(this.calculateHours(date))
+      })
+    }
   }
   calculateHours(date){
-    console.log("calculate hours");
+    console.log("calculate hours", date);
     if (date[0] && date[1]) {
       let startDate_ms = date[0].getTime()
       let endDate_ms = date[1].getTime()
@@ -79,7 +89,7 @@ class Details extends Component {
     });
     const id = this.state.person._id;
     const data =
-    { vacationHoursRemaining: this.state.person.vacationHoursRemaining - this.state.hoursToBeUsed,
+    { vacationHoursRemaining: this.state.daysRemaining*8,
       entry:{
         startDate: this.state.startDate,
         endDate: this.state.endDate,
@@ -101,6 +111,7 @@ class Details extends Component {
             person: json,
             note: ""
           })
+          this.hoursCalculations(json)
       });
   }
   deleteEntry(entries, i){
@@ -123,162 +134,183 @@ class Details extends Component {
         person: json
       })
         console.log(json);
+        this.hoursCalculations(json)
     });
   }
-  updateVacationDaysPerYear(person, e){
-    console.log("updateVacationDaysPerYear", person._id, e);
-    if (!e) {
-      return
-    } else {
-
-      fetch(`/api/people/${person._id}/hoursPerCycle/${e}`,
-        { method: 'PUT',
-          headers: {'Accept': 'application/json, text/plain, */*',
-                    'Content-Type': 'application/json'},
-        })
-        .then(res => res.json())
-        .then(json => {
-          console.log("hoursPerCycle", json);
-        });
-    }
-  }
   calculateHoursUsed(person){
+  if(person.entries){
     let vacationHoursUsed = 0
-    if(person.entries){
+    let hoursUsed = {
+      total: 0,
+      thisYear: 0,
+      lastYear:0,
+    }
+    let currentYear = new Date()
       for (let i = 0; i < person.entries.length; i++) {
+        let startDateYear = new Date(person.entries[i].startDate).getFullYear()
+        let endDateYear = new Date(person.entries[i].endDate).getFullYear()
         vacationHoursUsed = vacationHoursUsed + person.entries[i].hoursUsed
+        hoursUsed.total = hoursUsed.total + person.entries[i].hoursUsed
+        if (startDateYear === new Date().getFullYear()
+            && endDateYear === new Date().getFullYear()
+            && startDateYear === endDateYear) {
+            hoursUsed.thisYear = hoursUsed.thisYear + person.entries[i].hoursUsed
+        } else if(startDateYear === new Date().getFullYear()-1
+                  && endDateYear === new Date().getFullYear()-1) {
+                  hoursUsed.lastYear = hoursUsed.lastYear + person.entries[i].hoursUsed
+        } else{
+
+        }
       }
-      console.log("vacation days, hours used", vacationHoursUsed, person.vacationHoursRemaining);
-     return (vacationHoursUsed)
+      console.log("lastYearDays", hoursUsed.lastYear/8);
+      console.log("thisYearDays", hoursUsed.thisYear/8);
+      console.log("totalDays", hoursUsed.total/8);
+     return (hoursUsed)
    } else return "Could not calculate hours"
   }
   hoursCalculations(person){
     if(person.name){
       let today = new Date().setHours(0,0,0,0);
-      let beginDate = new Date(person.beginDate).getTime();
-      let hoursAccruedPerDay = (person.vacationHoursPerYear/8)/365;
       today = new Date(today)
+      let beginDate = new Date(person.beginDate).setHours(0,0,0,0);
       beginDate = new Date(beginDate)
-      let todayTimezoneOffset = new Date(today).getTimezoneOffset()
-      let beginDateTimezoneOffset = new Date(beginDate).getTimezoneOffset()
-      let timezoneOffset = (todayTimezoneOffset - beginDateTimezoneOffset)/60
-      //Vacation hours used
-      let hoursUsed = this.calculateHoursUsed(person)
-      console.log("hoursCalculations", today, beginDate, timezoneOffset);
-      //hours person has been with company as of start date
-      let hoursHere = ((today - beginDate)/1000/60/60)-timezoneOffset;
-      let hoursAccruedSinceStart = hoursAccruedPerDay*hoursHere + this.calculateOneOffAdditions(person)
-      let endOfYear = new Date((new Date().getFullYear()),11,31).setHours(23,59,59,999);
-      let hoursLeftInTheYear = (endOfYear - new Date().getTime())/1000/60/60;
-      console.log("calculateHoursUsed", this.calculateHoursUsed(person));
-      console.log();
-      console.log("hoursLeftInTheYear",hoursLeftInTheYear);
-      console.log("hoursAccruedPerDay", hoursAccruedPerDay);
-      console.log("hourshere", hoursHere);
-      console.log("yearend", hoursHere+hoursLeftInTheYear);
-      console.log("daysRemaining", hoursAccruedPerDay,hoursHere, hoursUsed,hoursAccruedPerDay*hoursHere ,Math.round(((hoursAccruedPerDay*hoursHere/24)*100)/100)-hoursUsed/8);
-      return {
-        daysRemaining:Math.round((hoursAccruedPerDay*hoursHere/24-hoursUsed)*100)/100,
-        daysAccruedSinceStart: Math.round((hoursAccruedSinceStart/24)*100)/100,
-        yearEndDaysAccrued:Math.round((hoursAccruedPerDay*(hoursHere+hoursLeftInTheYear)/24)*1000)/1000
-
+      let endOfYear = new Date((today.getFullYear()),11,31).setHours(23,59,59,999);
+      let startOfYear = new Date(today.getFullYear(),0,1);
+      let currentYear = new Date(today).getFullYear();
+      let hoursAccruedPerDay = (person.vacationHoursPerYear/8)/365;
+      console.log("today",today, beginDate);
+      let hoursUsed = this.calculateHoursUsed(person);  //Vacation hours used
+      let oneOffAdditionDays = this.calculateOneOffAdditions(person)/8 //one off additions hours converted to days
+      let hoursHere = ((today - beginDate)/1000/60/60)+(this.timezoneOffsetHours(beginDate,today)); //hours person has been with company as of start date
+      let hoursAccruedSinceStart = hoursAccruedPerDay*hoursHere;
+      let hoursLeftInTheYear = (endOfYear - today.getTime()+this.timezoneOffsetHours(today.getTime(),endOfYear))/1000/60/60;
+      let hoursThisYear = (today - startOfYear +this.timezoneOffsetHours(startOfYear.getTime(), today.getTime()))/1000/60/60;
+      let hoursWorkedLastYear
+      let hoursWorkedThisYear = hoursThisYear
+      if (beginDate.getFullYear() === currentYear-1) {
+          hoursWorkedLastYear = ((new Date(currentYear-1,11,31).setHours(23,59,59,999))-beginDate)/1000/60/60+this.timezoneOffsetHours(new Date(currentYear-1,11,31).setHours(23,59,59,999),beginDate);
+          hoursWorkedLastYear = Math.round(hoursWorkedLastYear)
+          console.log("###In 2nd year hoursWorkedLastYear",hoursWorkedLastYear);
+      } else if(beginDate.getFullYear() === currentYear){
+        hoursWorkedThisYear = ((today-beginDate)/1000/60/60)+this.timezoneOffsetHours(endOfYear,beginDate);
+        hoursWorkedLastYear = 0;
+        console.log("In 1st year. Worked",today, beginDate,(today-beginDate)/1000/60/60);
+      } else {
+        console.log("in 3rd year", new DatecurrentYear, beginDate.getFullYear());
+        hoursWorkedLastYear = 8760
       }
-    } else return{
-                  daysRemaining:"daysRemaining: no data returned",
-                  daysAccruedSinceStart:"No Data Returned",
-                  yearEndDaysAccrued:"No Data Returned"
-                }
+
+      let daysAccruedSinceStart = (Math.ceil((hoursAccruedSinceStart/24)*2)/2)+oneOffAdditionDays;
+      let daysAccruedlastYear = (Math.ceil(((hoursWorkedLastYear/24)*hoursAccruedPerDay)-hoursUsed.lastYear/8)*2)/2
+      if (daysAccruedlastYear > 5) {daysAccruedlastYear=5}
+      if (daysAccruedlastYear < 0) {daysAccruedlastYear=0}
+      let daysRemainingEOY = (person.vacationHoursPerYear/8)+oneOffAdditionDays+daysAccruedlastYear
+      let useByEndOfYear = (Math.ceil((hoursAccruedPerDay*(hoursHere+hoursLeftInTheYear)/24)*2)/2)+oneOffAdditionDays-(hoursUsed.total/8)-5
+      if (useByEndOfYear < 0) {useByEndOfYear =0 }
+      console.log("hoursUsed.thisYear", hoursUsed.thisYear);
+      this.setState({
+        hoursUsedThisYear: hoursUsed.thisYear,
+        daysRemaining:(Math.ceil((hoursAccruedPerDay*(hoursHere/24)*2)/2-(hoursUsed.total/8))+oneOffAdditionDays),
+        daysRemainingEOY: daysRemainingEOY-hoursUsed.thisYear/8,
+        daysLeftFromLastYear: daysAccruedlastYear,
+        daysAccruedThisYear: (Math.ceil((hoursAccruedPerDay)*hoursWorkedThisYear/24)*2)/2,
+        yearEndDaysAccrued:(person.vacationHoursPerYear/8)+oneOffAdditionDays+daysAccruedlastYear,
+        useByEndOfYear: useByEndOfYear
+      })
+    } else return
 
 
   }
   calculateOneOffAdditions(person){
     if(person.oneOffAdditions){
-
       let oneOffAdditionHours = 0
-
       for (var i = 0; i < person.oneOffAdditions.length; i++) {
         oneOffAdditionHours = oneOffAdditionHours + person.oneOffAdditions[i].add
-
       }
-      console.log("oneOffAdditionHours", oneOffAdditionHours);
-      return oneOffAdditionHours/8
+      return oneOffAdditionHours
     }
     else return null
+  }
+  timezoneOffsetHours(earlier, later){
+    let earlierOffset = new Date(earlier).getTimezoneOffset()
+    let laterOffset= new Date(later).getTimezoneOffset()
+    let timezoneDifference = earlierOffset - laterOffset;
+    return timezoneDifference/60
   }
   render() {
     return (
       <>
-          <div className="details">
-            <div className="details title">
-              <h1>{this.state.person.name}</h1>
-              <h3>Start Date:</h3>
-              {this.state.person.beginDate ?
-                <h4>{new Date(this.state.person.beginDate).toLocaleDateString("en-US")}</h4>
-              :null}
+
+          {this.state.person ?
+            <div className="details">
+
+            <div className="details-title">
+              <h1>{this.state.person.name} {this.state.person.lastName}</h1>
+              <h3>Start Date:
+                {this.state.person.beginDate ?
+                  <span> {new Date(this.state.person.beginDate).toLocaleDateString("en-US")}</span>
+                :null}
+              </h3>
             </div>
 
-            {this.state.person.name === "Phil"?
-              <div className="admin">
-                <h2>Admin</h2>
-                <h3>Vacation days per year</h3>
-                <div className="admin-input-container">
-                  {this.props.people.map((people, i)=>(
-                    <label key={i}><span className="label">{people.name}</span>
-                      <input
-                        value={this.state.vacationHoursPerYear}
-                        type="number"
-                        placeholder={people.vacationHoursPerYear/8}
-                        onChange={(e)=>this.updateVacationDaysPerYear(people, e.target.value)}
-                        className="input-1"
-                        min="0"
-                      />
-                    </label>
 
-                  ))}
-                </div>
-              </div>
-            :null}
+
             <div className="vacation-days-details container">
-              <h2 className="vacation-days-details-header"> Vacation Days</h2>
-              <div className="detail-group first">
-                <div className="detail-container remaining">
-                  <h4>Remaining </h4>
-                  <h3>  {(((this.state.person.vacationHoursPerYear) - this.calculateHoursUsed(this.state.person))/8)+ this.calculateOneOffAdditions(this.state.person)}</h3>
-                </div>
+              <div className="white-header">
+                <h2 className="vacation-days-details-header "> PTO Days</h2>
+              </div>
+              <div className="detail-group top">
                 <div className="detail-container used">
                   <h4>Used </h4>
-                  <h3>  {this.calculateHoursUsed(this.state.person)/8}</h3>
+                    <h3> {this.state.hoursUsedThisYear/8}</h3>
+                </div>
+                <div className="detail-container remaining">
+                  <h4>Remaining </h4>
+                  <h3>{this.state.daysRemainingEOY}</h3>
                 </div>
               </div>
-              <div className="detail-group second">
+              <div className="detail-group accrued">
                 <h2>Accrued</h2>
-                <div className="detail-container accrued monthly">
-                  <h4>Monthly </h4>
-                  <h3>  {Math.round((this.state.person.vacationHoursPerYear/8/12) * 1000) / 1000}</h3>
-                </div>
-                <div className="detail-container accrued annually">
-                  <h4>Annually </h4>
-                  <h3>  {this.state.person.vacationHoursPerYear/8}</h3>
-                </div>
-                <div>
-                  <div className="detail-container total-accrued">
-                    <h4>Since start date </h4>
-                    <h3> {Math.ceil((this.hoursCalculations(this.state.person).daysAccruedSinceStart)*2)/2}</h3>
+                <div className="content">
+                  <div className="detail-containr-top">
+                    <div className="detail-container total-accrued">
+                      <h4> This year </h4>
+                      <h3> {this.state.daysAccruedThisYear}</h3>
+                    </div>
+                    <div className="detail-container total-accrued">
+                      <h4>From {new Date().getFullYear() - 1}</h4>
+                      <h3> {this.state.daysLeftFromLastYear}</h3>
+                    </div>
+                    <div className="detail-container total-accrued">
+                      <h4>By End Of Year</h4>
+                      <h3> {this.state.yearEndDaysAccrued}</h3>
+                    </div>
                   </div>
-                  <div className="detail-container total-accrued">
-                    <h4>Since start date to EOY </h4>
-                    <h3> {Math.ceil((this.hoursCalculations(this.state.person).yearEndDaysAccrued*2)/2)}</h3>
+                  <div className="detail-container accrued monthly">
+                    <h4>Monthly </h4>
+                    <h3>  {Math.round((this.state.person.vacationHoursPerYear/8/12) * 1000) / 1000}</h3>
+                  </div>
+                  <div className="detail-container accrued annually">
+                    <h4>Annually </h4>
+                    <h3>  {this.state.person.vacationHoursPerYear/8}</h3>
                   </div>
                 </div>
-              </div>
-              <div className="detail-container accrued annually">
-                <h4>Left by EOY </h4>
-                <h3>  {((this.state.person.vacationHoursPerYear) - this.calculateHoursUsed(this.state.person))/8}</h3>
-              </div>
+                <div className="detail-container remaining">
+                  <h5>5 hours of PTO can be rolled over to the next year <br></br> so you'll need to use</h5>
+                  <h3>{this.state.useByEndOfYear} days</h3>
+                  <h5>by the end of the year</h5>
+                </div>
 
+              </div>
             </div>
-            <div className="view-entry">
-              <button onClick={()=>this.setState({hidden: !this.state.hidden})} className="show-table"><span>Entries</span><FaAngleDown className={this.state.hidden? "arrow hidden": "arrow"} /><FaAngleUp className={this.state.hidden? "arrow": "arrow hidden"} /></button>
+            <div className="view-entry container">
+              <div className="white-header">
+                <button onClick={()=>this.setState({hidden: !this.state.hidden})} className="show-table">
+                    <span>PTO Entries</span>
+                    <FaAngleDown className={this.state.hidden? "arrow hidden": "arrow"} />
+                    <FaAngleUp className={this.state.hidden? "arrow": "arrow hidden"} />
+                </button>
+                </div>
                 {this.state.person.entries ?
                   <table className={this.state.hidden? "view-entry-table": "view-entry-table hidden"}>
                     <tbody>
@@ -286,15 +318,15 @@ class Details extends Component {
                         <th></th>
                         <th>Start Date</th>
                         <th>End Date</th>
-                        <th>Hours used</th>
+                        <th>Days used</th>
                         <th>Note</th>
                       </tr>
-                      {this.state.person.entries.map((entries, i) =>(
+                      {this.state.person.entries.sort((a,b)=>(a.startDate-b.startDate)).map((entries, i) =>(
                         <tr key={i}>
                           <td><button onClick={()=>this.deleteEntry(entries, i)} className="delete-button">x</button></td>
                           <td className="start-date">{new Date(entries.startDate).toLocaleDateString("en-US")}</td>
                           <td className="endDate-date">{new Date(entries.endDate).toLocaleDateString("en-US")}</td>
-                          <td className="hours-used">{entries.hoursUsed}</td>
+                          <td className="days-used">{entries.hoursUsed/8}</td>
                           <td className="entry-note">{entries.note}</td>
                         </tr>
                       ))}
@@ -302,44 +334,48 @@ class Details extends Component {
                 </table> : <span>No Entries</span>
                 }
             </div>
-            <div className="add-entry">
+            <div className="add-entry container">
               <div className="add-entry calendar">
-                <h2 className="add-entry-title">Add Entry:</h2>
+                <div className="white-header">
+                  <h2 className="add-entry-title">Add PTO</h2>
+                </div>
                 <Calendar
-                  value={this.state.startDate}
                   onChange={d => this.dateSet(d)}
                   minDetail = {"year"}
                   selectRange={true}
                   showWeekNumbers={true}
                   onClickDay={(value) => console.log('Clicked day: ', value)}
                   onDrillDown={(value) => console.log(':onDrillDown ', value)}
-                  tileClassName="tile"
+                  tileClassName="calendar-tile"
                 />
               </div>
 
               <div className="add-entry-preview">
-                <div>
+                <div className="hours-used">
+                  <span>Using </span>
+                  <span className="hours"> {this.state.hoursToBeUsed/8}</span>
+                  <span> Days</span>
+                </div>
+                <div className="add-entry-details">
                   <h3>{this.state.startDate.toLocaleDateString("en-US")} </h3>
                     to
                   <h3> {this.state.endDate.toLocaleDateString("en-US")}</h3>
+                  <label>
+                    <input
+                      value={this.state.note}
+                      type="string"
+                      onChange={(e)=>this.setState({note:e.target.value})}
+                      className="add-entry-note"
+                      min="0"
+                      placeholder="Add Note"
+                    />
+                  </label>
                 </div>
-                <div className="hours-used">
-                  <span>Entry used:</span>
-                  <span className="hours"> {this.state.hoursToBeUsed}</span>
-                </div>
-                <label> <span className="note-input-label">Note:</span>
-                  <input
-                    value={this.state.note}
-                    type="string"
-                    onChange={(e)=>this.setState({note:e.target.value})}
-                    className="add-entry input-1"
-                    min="0"
-                  />
-                </label>
               </div>
               <button onClick={this.addVacationDates}className="add-entry-button" >Add</button>
             </div>
           </div>
+        :null}
 
       </>
     );

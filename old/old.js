@@ -36,3 +36,9 @@ calculateMonthlyDaysAccrued(person){
           yearEndDaysAccrued:Math.round((yearEndDaysAccrued*vactaionHoursPerMonth/8)*1000)/1000
   }
 }
+
+yearEndDaysAccrued:(Math.ceil((hoursAccruedPerDay*(hoursHere+hoursLeftInTheYear)/24)*2)/2)+oneOffAdditionDays,
+let daysRemainingEOY = ((Math.ceil((hoursAccruedPerDay*(hoursWorkedThisYear)/24)*2)/2)+oneOffAdditionDays)-(hoursUsed.total/8);
+if (daysRemainingEOY > (person.vacationHoursPerYear/8)+5) {
+  daysRemainingEOY=(person.vacationHoursPerYear/8)+5;
+}
