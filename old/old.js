@@ -42,3 +42,12 @@ let daysRemainingEOY = ((Math.ceil((hoursAccruedPerDay*(hoursWorkedThisYear)/24)
 if (daysRemainingEOY > (person.vacationHoursPerYear/8)+5) {
   daysRemainingEOY=(person.vacationHoursPerYear/8)+5;
 }
+
+
+,
+{
+test: /\.(png|svg|jpg|gif)$/,
+ use: [
+   'file-loader'
+ ]
+}
