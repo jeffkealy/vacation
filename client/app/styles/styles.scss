@@ -3,7 +3,7 @@
 @import url('vendor/normalize');
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,700');
 
-$action-bkrnd: #49c5b6;
+// $action-bkrnd: #49c5b6;
 
 
 h3,h4{
@@ -147,7 +147,7 @@ main{
     text-align: center;
     select{
       margin: 10px 0;
-      background-color: $action-bkrnd;
+      background-color: #49c5b6;
       border: none;
       padding: 10px;
       option{
