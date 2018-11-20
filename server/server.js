@@ -9,7 +9,7 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 
 const config = require('../config/config');
 const webpackConfig = require('../webpack.config');
-
+require('dotenv').config();
 const isDev = process.env.NODE_ENV !== 'production';
 const port  = process.env.PORT || 8080;
 
@@ -18,6 +18,7 @@ const port  = process.env.PORT || 8080;
 
 // Set up Mongoose
 mongoose.connect(isDev ? config.db_dev : config.db);
+console.log(config.db);
 mongoose.Promise = global.Promise;
 
 const app = express();

@@ -51,3 +51,16 @@ test: /\.(png|svg|jpg|gif)$/,
    'file-loader'
  ]
 }
+
+
+mongoimport -d <databasename> -c <collectionname> --type csv --file <filelocation/file.csv> --host <hostdir example:ds011291.mlab.com> --port <portnumber example:11111> -u <username> -p <password> --headerline
+
+mongorestore -h ds027348.mlab.com:27348 -d heroku_gbp2sgfl -u jeffkealy -p typepassowrdhere /Users/queueit/Documents/dev/Vacation/dump/vacation
+
+mongodump -d vacation
+
+{
+  db: 'mongodb://localhost:27017/vacation',
+  db_dev: 'mongodb://localhost:27017/vacation'
+
+}
