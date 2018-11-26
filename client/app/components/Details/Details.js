@@ -58,13 +58,8 @@ class Details extends Component {
     startDate = date[0]
     endDate = date[1]
     if (new Date(endDate) < new Date(startDate)) {
-      startDate = date[1].setHours(0,0,0,0);
-      endDate = date[0].setHours(23,59,59,999);
-      console.log("endDate", startDate);
-      startDate = new Date((startDate));
-      endDate = new Date((endDate));
-      console.log("Typeof startDate", typeof startDate);
-      console.log("swapped dates",startDate, endDate,((endDate - startDate)/one_day)*8);
+      startDate = new Date(date[1].setHours(0,0,0,0));
+      endDate = new Date(date[0].setHours(23,59,59,999));
       this.setState({
         startDate: startDate,
         endDate:endDate,
@@ -244,7 +239,7 @@ class Details extends Component {
     if(person.oneOffAdditions){
       let oneOffAdditionHours = 0
       for (var i = 0; i < person.oneOffAdditions.length; i++) {
-        oneOffAdditionHours = oneOffAdditionHours + person.oneOffAdditions[i].add
+        oneOffAdditionHours = oneOffAdditionHours + person.oneOffAdditions[i].oneOffHours
       }
       return oneOffAdditionHours
     }
@@ -390,14 +385,13 @@ class Details extends Component {
 
                 />
                   <span className="checkmark"></span>
-                  <span>{this.state.subtractHalfDayHours}</span>
                 </label>
               </div>
 
               <div className="add-entry-preview">
                 <div className="hours-used">
                   <span>Using </span>
-                  <span className="hours"> {((this.state.hoursToBeUsed+this.state.subtractHalfDayHours)/8)}</span>
+                  <span className="hours"> {(this.state.hoursToBeUsed+this.state.subtractHalfDayHours)/8 < 0 ? 0 : (this.state.hoursToBeUsed+this.state.subtractHalfDayHours)/8}</span>
                   <span> Days</span>
                 </div>
                 <div className="add-entry-details">

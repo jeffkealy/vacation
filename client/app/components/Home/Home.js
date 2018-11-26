@@ -55,7 +55,7 @@ class Home extends Component {
         </ul>
         { this.state.showDetails ?
             <div className="details-container">
-              <button className="back-button" onClick={() => this.setState({showDetails: false, showPeople:true, showAdmin:false})}>Back</button>
+              <button className="back-button action-button" onClick={() => this.setState({showDetails: false, showPeople:true, showAdmin:false})}>Back</button>
               <Details person={this.state.person} people={this.state.people}/>
             </div>
             : null
@@ -67,7 +67,7 @@ class Home extends Component {
         {this.state.showAdmin ?
           <div>
 
-            <button className="back-button admin" onClick={() => this.setState({showAdmin: false, showPeople:true})}>Back</button>
+            <button className="back-button action-button admin" onClick={() => this.setState({showAdmin: false, showPeople:true})}>Back</button>
             <h2 className="admin-title">Admin</h2>
             <Admin people={this.state.people}/>
           </div>

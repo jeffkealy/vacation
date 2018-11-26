@@ -40,7 +40,7 @@ button{
   cursor: pointer;
   border-radius: 2px;
 }
-.back-button{
+.action-button{
   background-color:#49c5b6;
   color: rgba(43, 43, 43, 0.78);
   border: none;
@@ -53,6 +53,26 @@ button{
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
+.delete-button{
+  font-weight: 700;
+  margin: 1px auto ;
+  color: rgba(43, 43, 43, 0.78);
+  background-color: $action-bkrnd;
+  border-radius: 50%;
+  border: none;
+  padding: 0px 6px 2px 7px;
+
+}
+.delete-button:hover{
+  color: #fff;
+  outline: none;
+  background-color: red;
+  box-shadow: 0px 0px 11px rgba(255, 255, 255, 0.45);
+}
+.delete-button:active{
+  box-shadow: 0px 0px 11px rgba(255, 255, 255, 0.75);
+}
+
 input{
   border-radius: 50px;
   margin: 5px auto;
@@ -205,7 +225,22 @@ main{
   .admin-oneOffs{
     text-align: center;
     position: relative;
-
+    label{
+      text-align: center;
+    }
+    .oneOff-days-input{
+      max-width: 20px;
+    }
+    .submit-button{
+      padding: 10px 20px;
+    }
+    th{
+      text-align: left;
+      padding: 2px 8px 2px 0;
+    }
+    th:first{
+      padding-left: 10px;
+    }
   }
   h2, h3, h4{
     text-align: center;
@@ -359,24 +394,11 @@ main{
     padding: 5px ;
     text-align: left;
   }
-  .delete-button{
-    margin: 1px auto ;
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0);
-    // border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.69);
-    padding: 0px 8px 3px 8px;
-
-  }
-
   td.days-used{
     text-align: center;
   }
 
-  .delete-button:hover{
-    outline: none;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
+
   .add-entry {
     padding: 0 0 10px;
 

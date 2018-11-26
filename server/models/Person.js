@@ -7,7 +7,7 @@ const PersonSchema = new mongoose.Schema({
     vacationHoursPerYear: Number,
     beginDate:Date,
     oneOffAdditions:[{
-      add:Number,
+      oneOffHours:Number,
       note: String,
       date: Date
     }],

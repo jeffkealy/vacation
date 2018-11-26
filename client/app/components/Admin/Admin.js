@@ -8,10 +8,17 @@ class Admin extends Component{
 
     this.state={
       employeeSelected:{},
-      updateVacationHoursPerYear: ""
+      updateVacationHoursPerYear: "",
+      oneOffHours: 0,
+      OneOffNote:""
     };
     this.updateVacationDaysPerYear = this.updateVacationDaysPerYear.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.deleteOneOffEntry = this.deleteOneOffEntry.bind(this);
+    this.addOneOffEntry = this.addOneOffEntry.bind(this);
+
+
+
   }
 updateVacationDaysPerYear(){
     console.log("updateVacationDaysPerYear", this.state.employeeSelected._id, this.state.updateVacationHoursPerYear);
@@ -35,6 +42,42 @@ updateVacationDaysPerYear(){
           })
         });
     }
+}
+addOneOffEntry(){
+  let id = this.employeeSelected._id
+  console.log("addOneOffEntry", id);
+  fetch(`/api/people/${id}/addOneOff`,
+    { method: 'PUT',
+      headers: {'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(json => {
+        this.setState({
+          person: json,
+          note: ""
+        })
+        this.hoursCalculations(json)
+    });
+}
+deleteOneOffEntry(entries, i){
+  console.log(entries, i, this.state.employeeSelected);
+  fetch(`/api/people/${id}/deleteOneOff`,
+    {
+      method:'DELETE',
+      headers: {'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    })
+  .then(res => res.json())
+  .then(json => {
+    this.setState({
+      person: json
+    })
+      console.log(json);
+
+  });
 }
 handleChange(e){
   this.setState({
@@ -86,7 +129,7 @@ render(){
                  placeholder=" "
                />
              </label>
-             <button className="update-vacation-submit-button back-button" onClick={()=>this.updateVacationDaysPerYear()}>Submit</button>
+             <button className="update-vacation-submit-button back-button action-button" onClick={()=>this.updateVacationDaysPerYear()}>Submit</button>
           </div>
         </div>
         <div className="admin-oneOffs container">
@@ -94,7 +137,40 @@ render(){
             <h3>Add/Subtract</h3>
           </div>
           <h5>Add or subtract one off hours. Use negative number to stubtract</h5>
+            <label> Days
+              <input
+                className='oneOff-days-input'
+                type="number"
 
+                />
+            </label>
+            <label> Note
+              <input
+                className='oneOff-note-input'
+                type="text"
+
+                />
+            </label>
+              <button className='submit-button action-button'>Submit</button>
+
+            <table className="admin-oneOffs-table">
+              <tbody>
+                <tr>
+                  <th></th>
+                  <th className="th-date">Date</th>
+                  <th>Days</th>
+                  <th>Note</th>
+                </tr>
+                {this.state.employeeSelected.oneOffAdditions.map((entries, i) =>(
+                  <tr key={i}>
+                    <td><button onClick={()=>this.deleteOneOffEntry(entries, i)} className="delete-button">x</button></td>
+                    <td className="oneOffs-date">{new Date(entries.date).toLocaleDateString("en-US", {timeZone:'UTC'})}</td>
+                    <td className="oneOffs-hours">{entries.oneOffHours/8}</td>
+                    <td className="oneOffs-note">{entries.note}</td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
         </div>
         </div>
         :null}
