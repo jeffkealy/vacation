@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const PersonSchema = new mongoose.Schema({
     name: String,
     lastName: String,
+    email: String,
+    password: String,
     vacationHoursRemaining: Number,
     vacationHoursPerYear: Number,
     beginDate:Date,
@@ -16,7 +18,8 @@ const PersonSchema = new mongoose.Schema({
       endDate: Date,
       hoursUsed: Number,
       note: String,
-      subtractHalfDayHours: Number
+      subtractHalfDayHours: Number,
+      approved: Boolean
     }]
 });
 

@@ -79,3 +79,6 @@ calculateHours(date){
     return 0
   }
 }
+
+
+{this.state.person.entries.map((item, key)=>item.approved)===false?

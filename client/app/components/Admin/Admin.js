@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import 'whatwg-fetch';
+import {TiThumbsUp} from 'react-icons/ti';
 
 
 class Admin extends Component{
@@ -9,8 +10,8 @@ class Admin extends Component{
     this.state={
       employeeSelected:{},
       updateVacationHoursPerYear: "",
-      oneOffHours: 0,
-      OneOffNote:""
+      oneOffHours: "",
+      oneOffNote:""
     };
     this.updateVacationDaysPerYear = this.updateVacationDaysPerYear.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -44,8 +45,12 @@ updateVacationDaysPerYear(){
     }
 }
 addOneOffEntry(){
-  let id = this.employeeSelected._id
-  console.log("addOneOffEntry", id);
+  let id = this.state.employeeSelected._id
+  let data = {
+    oneOffHours:this.state.oneOffHours*8,
+    note: this.state.oneOffNote,
+    date: new Date()
+  }
   fetch(`/api/people/${id}/addOneOff`,
     { method: 'PUT',
       headers: {'Accept': 'application/json, text/plain, */*',
@@ -55,28 +60,27 @@ addOneOffEntry(){
     .then(res => res.json())
     .then(json => {
         this.setState({
-          person: json,
-          note: ""
+          employeeSelected: json,
+          oneOffNote: "",
+          oneOffHours: ""
         })
-        this.hoursCalculations(json)
     });
 }
-deleteOneOffEntry(entries, i){
-  console.log(entries, i, this.state.employeeSelected);
+deleteOneOffEntry(entry){
+  console.log(entry);
+  let id = this.state.employeeSelected._id
   fetch(`/api/people/${id}/deleteOneOff`,
     {
       method:'DELETE',
       headers: {'Accept': 'application/json, text/plain, */*',
                 'Content-Type': 'application/json'},
-      body: JSON.stringify(data)
+      body: JSON.stringify(entry)
     })
   .then(res => res.json())
   .then(json => {
     this.setState({
-      person: json
+      employeeSelected: json
     })
-      console.log(json);
-
   });
 }
 handleChange(e){
@@ -88,6 +92,36 @@ handleChange(e){
 render(){
   return(
       <div className="admin-container ">
+        <div className="admin-apporval container">
+          <div className="white-header">
+            <h2>Approval Needed</h2>
+          </div>
+          <table>
+              <tr>
+                <th>Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Days</th>
+                <th>Note</th>
+                <th>Approve</th>
+              </tr>
+              {this.props.people.sort((a,b)=>(a.startDate-b.startDate)).map((people, i) =>(
+                <tbody key={i}>
+                {people.entries.map((entries,i2)=>(
+                <tr key={i2} className={entries.approved === false? "": "hidden"}>
+                  <td className="name"><span>{people.name}</span> <span> {people.lastName}</span></td>
+                  <td className="start-date">{new Date(entries.startDate).toLocaleDateString("en-US", {timeZone:'UTC'})}</td>
+                  <td className="endDate-date">{new Date(entries.endDate).toLocaleDateString("en-US", {timeZone:'UTC'})}</td>
+                  <td className="days-used">{(entries.hoursUsed+entries.subtractHalfDayHours)/8}</td>
+                  <td className="entry-note">{entries.note}</td>
+                  <td className="td-approval"><button onClick={()=>this.approveEntry(entries, i)} className=" approval-button"><TiThumbsUp className="thumbsUp-icon"/></button></td>
+                </tr>
+                ))}
+                </tbody>
+              ))}
+          </table>
+
+        </div>
         <div className="admin-select-employee container">
           <div className="white-header">
             <h3>Select Employee</h3>
@@ -139,19 +173,21 @@ render(){
           <h5>Add or subtract one off hours. Use negative number to stubtract</h5>
             <label> Days
               <input
+                value = {this.state.oneOffHours}
                 className='oneOff-days-input'
                 type="number"
-
+                onChange={(e)=>this.setState({oneOffHours:e.target.value})}
                 />
             </label>
             <label> Note
               <input
+                value = {this.state.oneOffNote}
                 className='oneOff-note-input'
                 type="text"
-
+                onChange={(e)=>this.setState({oneOffNote:e.target.value})}
                 />
             </label>
-              <button className='submit-button action-button'>Submit</button>
+              <button onClick={()=>this.addOneOffEntry()} className='submit-button action-button'>Submit</button>
 
             <table className="admin-oneOffs-table">
               <tbody>

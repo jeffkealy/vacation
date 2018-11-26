@@ -18,8 +18,8 @@ class Details extends Component {
       hidden: false,
       vacationHoursUsed:0,
       halfDaySubtracted: false,
-      subtractHalfDayHours:0
-
+      subtractHalfDayHours:0,
+      entryApproved: false
     };
     this.addVacationDates = this.addVacationDates.bind(this);
     this.dateSet = this.dateSet.bind(this);
@@ -30,13 +30,14 @@ class Details extends Component {
     this.timezoneOffsetHours = this.timezoneOffsetHours.bind(this);
     this.subtractHalfDayHours = this.subtractHalfDayHours.bind(this);
     this.setSubtractHalfDayHours = this.setSubtractHalfDayHours.bind(this);
+    this.entryApproved = this.entryApproved.bind(this);
+
 
 
   }
 
 
   componentDidMount() {
-
     let id = this.props.person.name
     fetch(`/api/person/${id}`, {method: 'PUT'})
       .then(res => res.json())
@@ -46,6 +47,7 @@ class Details extends Component {
         });
         console.log("componentDidMount json", json);
         this.hoursCalculations(json)
+        console.log("#####",this.state.person);
       });
   }
 
@@ -256,14 +258,10 @@ class Details extends Component {
       this.setSubtractHalfDayHours();
     });
   }
+  entryApproved(){
+    return true
+  }
 
-  // setSubtractHalfDayHours(){
-  //   if (this.state.halfDaySubtracted) {
-  //     return -4
-  //   } else{
-  //     return 0
-  //   }
-  // }
   render() {
     return (
       <>
@@ -338,9 +336,40 @@ class Details extends Component {
                     <FaAngleUp className={this.state.hidden? "arrow": "arrow hidden"} />
                 </button>
                 </div>
+                <h3>Awaiting Approval</h3>
+                <div className="view-entry-table awaiting">
+                  <table >
+                    <thead>
+                        <tr>
+                          <th></th>
+                          <th>Start Date</th>
+                          <th>End Date</th>
+                          <th>Days used</th>
+                          <th>Note</th>
+                        </tr>
+                      </thead>
+
+                      {this.state.person.entries.sort((a,b)=>(a.startDate-b.startDate)).map(
+                        (entries, i) =>(
+                      <tbody key={i}>
+                        {entries.approved===false?
+                        <tr>
+                          <td><button onClick={()=>this.deleteEntry(entries, i)} className="delete-button">x</button></td>
+                          <td className="start-date">{new Date(entries.startDate).toLocaleDateString("en-US", {timeZone:'UTC'})}</td>
+                          <td className="endDate-date">{new Date(entries.endDate).toLocaleDateString("en-US", {timeZone:'UTC'})}</td>
+                          <td className="days-used">{(entries.hoursUsed+entries.subtractHalfDayHours)/8}</td>
+                          <td className="entry-note">{entries.note}</td>
+                        </tr>
+                        :null}
+                      </tbody>
+                      ))}
+
+                  </table>
+                </div>
                 {this.state.person.entries ?
-                  <table className={this.state.hidden? "view-entry-table": "view-entry-table hidden"}>
-                    <tbody>
+                <div className={this.state.hidden? "view-entry-table approved": "view-entry-table approved hidden"}>
+                  <h3>All</h3>
+                  <table >
                       <tr>
                         <th></th>
                         <th>Start Date</th>
@@ -349,17 +378,20 @@ class Details extends Component {
                         <th>Note</th>
                       </tr>
                       {this.state.person.entries.sort((a,b)=>(a.startDate-b.startDate)).map((entries, i) =>(
-                        <tr key={i}>
+                        <tbody>
+                        <tr key={i} className={entries.approved === false? "red-background": ""}>
                           <td><button onClick={()=>this.deleteEntry(entries, i)} className="delete-button">x</button></td>
                           <td className="start-date">{new Date(entries.startDate).toLocaleDateString("en-US", {timeZone:'UTC'})}</td>
                           <td className="endDate-date">{new Date(entries.endDate).toLocaleDateString("en-US", {timeZone:'UTC'})}</td>
-                            <td className="days-used">{(entries.hoursUsed+entries.subtractHalfDayHours)/8}</td>
+                          <td className="days-used">{(entries.hoursUsed+entries.subtractHalfDayHours)/8}</td>
                           <td className="entry-note">{entries.note}</td>
                         </tr>
+                        </tbody>
                       ))}
-                  </tbody>
-                </table> : <span>No Entries</span>
-                }
+                  </table>
+                </div>
+                : <span>No Entries</span>
+              }
             </div>
             <div className="add-entry container">
               <div className="add-entry calendar">
