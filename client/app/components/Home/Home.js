@@ -18,22 +18,14 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    fetch(`/api/updateHours`)
+    fetch(`/api/person/names`)
     .then(res => res.json())
-    .then(json=>{
-      console.log("GET TIME", json);
+    .then(json =>{
+      console.log("GET People", json);
       this.setState({
         people:json
       });
-      fetch(`/api/person/names`)
-      .then(res => res.json())
-      .then(json =>{
-        console.log("GET People", json);
-        this.setState({
-          people:json
-        });
-      })
-    });
+    })
   }
 
   getDetails(person){

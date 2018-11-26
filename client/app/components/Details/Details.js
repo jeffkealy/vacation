@@ -17,15 +17,19 @@ class Details extends Component {
       note: "",
       hidden: false,
       vacationHoursUsed:0,
+      halfDaySubtracted: false,
+      subtractHalfDayHours:0
+
     };
     this.addVacationDates = this.addVacationDates.bind(this);
     this.dateSet = this.dateSet.bind(this);
-    this.calculateHours = this.calculateHours.bind(this);
     this.deleteEntry = this.deleteEntry.bind(this);
     this.calculateHoursUsed = this.calculateHoursUsed.bind(this);
     this.hoursCalculations = this.hoursCalculations.bind(this);
     this.calculateOneOffAdditions = this.calculateOneOffAdditions.bind(this);
     this.timezoneOffsetHours = this.timezoneOffsetHours.bind(this);
+    this.subtractHalfDayHours = this.subtractHalfDayHours.bind(this);
+    this.setSubtractHalfDayHours = this.setSubtractHalfDayHours.bind(this);
 
 
   }
@@ -47,37 +51,50 @@ class Details extends Component {
 
   dateSet(date){
     console.log(date);
-    let startDate = date[0]
-    let endDate = date[1]
+    let startDate
+    let endDate
+    let subtractHalfDayHours
+    let one_day=1000*60*60*24;
+    startDate = date[0]
+    endDate = date[1]
     if (new Date(endDate) < new Date(startDate)) {
-      console.log("swapped dates");
+      startDate = date[1].setHours(0,0,0,0);
+      endDate = date[0].setHours(23,59,59,999);
+      console.log("endDate", startDate);
+      startDate = new Date((startDate));
+      endDate = new Date((endDate));
+      console.log("Typeof startDate", typeof startDate);
+      console.log("swapped dates",startDate, endDate,((endDate - startDate)/one_day)*8);
       this.setState({
-        startDate: endDate,
-        endDate:startDate,
-        hoursToBeUsed: Math.abs(this.calculateHours(date))
+        startDate: startDate,
+        endDate:endDate,
+        hoursToBeUsed: Math.round(((endDate - startDate)/one_day)*8)
       })
-    } else{
-      console.log("normal dates");
+    } else {
       this.setState({
-        startDate: date[0],
-        endDate:date[1],
-        hoursToBeUsed: Math.abs(this.calculateHours(date))
+        startDate: startDate,
+        endDate:endDate,
+        hoursToBeUsed: Math.round(((endDate - startDate)/one_day)*8)
       })
     }
+
   }
-  calculateHours(date){
-    console.log("calculate hours", date);
-    if (date[0] && date[1]) {
-      let startDate_ms = date[0].getTime()
-      let endDate_ms = date[1].getTime()
-      let one_day=1000*60*60*24;
-      let difference_ms =endDate_ms- startDate_ms;
-      let days_ms = difference_ms/one_day
-      return Math.round((difference_ms/one_day)*8);
+  setSubtractHalfDayHours(item){
+    console.log("setSubtractHalfDayHours", item);
+    if (this.state.halfDaySubtracted) {
+      this.setState({
+        subtractHalfDayHours: -4,
+        hoursToBeUsed: this.state.hoursToBeUsed
+      });
+      return -4
     } else{
+      this.setState({subtractHalfDayHours: 0,
+        hoursToBeUsed: this.state.hoursToBeUsed
+      });
       return 0
     }
   }
+
   addVacationDates(){
     let beginningOfDayStartDate = this.state.startDate.setHours(0,0,0,0)
     let beginningOfDayEndDate = this.state.endDate.setHours(0,0,0,0)
@@ -94,7 +111,9 @@ class Details extends Component {
         startDate: this.state.startDate,
         endDate: this.state.endDate,
         hoursUsed: this.state.hoursToBeUsed,
-        note: this.state.note
+        note: this.state.note,
+        subtractHalfDayHours: this.state.subtractHalfDayHours
+
       }
     }
     console.log("addVacationDates data", data);
@@ -196,7 +215,7 @@ class Details extends Component {
         hoursWorkedLastYear = 0;
         console.log("In 1st year. Worked",today, beginDate,(today-beginDate)/1000/60/60);
       } else {
-        console.log("in 3rd year", new DatecurrentYear, beginDate.getFullYear());
+        console.log("in 3rd year", new Date(currentYear), beginDate.getFullYear());
         hoursWorkedLastYear = 8760
       }
 
@@ -237,6 +256,19 @@ class Details extends Component {
     let timezoneDifference = earlierOffset - laterOffset;
     return timezoneDifference/60
   }
+  subtractHalfDayHours(){
+    this.setState({halfDaySubtracted: !this.state.halfDaySubtracted},()=>{
+      this.setSubtractHalfDayHours();
+    });
+  }
+
+  // setSubtractHalfDayHours(){
+  //   if (this.state.halfDaySubtracted) {
+  //     return -4
+  //   } else{
+  //     return 0
+  //   }
+  // }
   render() {
     return (
       <>
@@ -248,7 +280,7 @@ class Details extends Component {
               <h1>{this.state.person.name} {this.state.person.lastName}</h1>
               <h3>Start Date:
                 {this.state.person.beginDate ?
-                  <span> {new Date(this.state.person.beginDate).toLocaleDateString("en-US")}</span>
+                  <span> {new Date(this.state.person.beginDate).toLocaleDateString("en-US", {timeZone:'UTC'})}</span>
                 :null}
               </h3>
             </div>
@@ -324,9 +356,9 @@ class Details extends Component {
                       {this.state.person.entries.sort((a,b)=>(a.startDate-b.startDate)).map((entries, i) =>(
                         <tr key={i}>
                           <td><button onClick={()=>this.deleteEntry(entries, i)} className="delete-button">x</button></td>
-                          <td className="start-date">{new Date(entries.startDate).toLocaleDateString("en-US")}</td>
-                          <td className="endDate-date">{new Date(entries.endDate).toLocaleDateString("en-US")}</td>
-                          <td className="days-used">{entries.hoursUsed/8}</td>
+                          <td className="start-date">{new Date(entries.startDate).toLocaleDateString("en-US", {timeZone:'UTC'})}</td>
+                          <td className="endDate-date">{new Date(entries.endDate).toLocaleDateString("en-US", {timeZone:'UTC'})}</td>
+                            <td className="days-used">{(entries.hoursUsed+entries.subtractHalfDayHours)/8}</td>
                           <td className="entry-note">{entries.note}</td>
                         </tr>
                       ))}
@@ -344,16 +376,28 @@ class Details extends Component {
                   minDetail = {"year"}
                   selectRange={true}
                   showWeekNumbers={true}
-                  onClickDay={(value) => console.log('Clicked day: ', value)}
-                  onDrillDown={(value) => console.log(':onDrillDown ', value)}
                   tileClassName="calendar-tile"
                 />
+
+              </div>
+              <div className="subtract-half-day">
+                <label><span>Subtract Half Day</span>
+                <input
+                  className="checkbox"
+                  type="checkbox"
+                  value={this.state.halfDaySubtracted}
+                  onChange={(e)=>this.subtractHalfDayHours(e.target.value)}
+
+                />
+                  <span className="checkmark"></span>
+                  <span>{this.state.subtractHalfDayHours}</span>
+                </label>
               </div>
 
               <div className="add-entry-preview">
                 <div className="hours-used">
                   <span>Using </span>
-                  <span className="hours"> {this.state.hoursToBeUsed/8}</span>
+                  <span className="hours"> {((this.state.hoursToBeUsed+this.state.subtractHalfDayHours)/8)}</span>
                   <span> Days</span>
                 </div>
                 <div className="add-entry-details">

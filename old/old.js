@@ -64,3 +64,18 @@ mongodump -d vacation
   db_dev: 'mongodb://localhost:27017/vacation'
 
 }
+
+
+calculateHours(date){
+  console.log("calculate hours", date);
+  if (date[0] && date[1]) {
+    let startDate_ms = date[0].getTime()
+    let endDate_ms = date[1].getTime()
+    let one_day=1000*60*60*24;
+    let difference_ms =endDate_ms- startDate_ms;
+    let days_ms = difference_ms/one_day
+    return Math.round((difference_ms/one_day)*8);
+  } else{
+    return 0
+  }
+}

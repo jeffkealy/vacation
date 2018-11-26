@@ -8,13 +8,15 @@ const PersonSchema = new mongoose.Schema({
     beginDate:Date,
     oneOffAdditions:[{
       add:Number,
-      note: String
+      note: String,
+      date: Date
     }],
     entries:[{
       startDate: Date,
       endDate: Date,
       hoursUsed: Number,
-      note: String
+      note: String,
+      subtractHalfDayHours: Number
     }]
 });
 

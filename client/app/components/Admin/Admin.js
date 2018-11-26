@@ -61,7 +61,7 @@ render(){
             <h3 className="start-date">
               Start Date:
               {this.state.employeeSelected.beginDate?
-              <span> {new Date(this.state.employeeSelected.beginDate).toLocaleDateString("en-US")}</span>
+              <span> {new Date(this.state.employeeSelected.beginDate).toLocaleDateString("en-US", {timeZone:'UTC'})}</span>
               :null}
             </h3>
           </div>
