@@ -1,10 +1,9 @@
 const Person = require('../../models/Person');
 
 module.exports = (app) => {
-
+//get all data
   app.get('/api/person/names', (req, res, next) =>{
     Person.find({}
-      // {name: 1}
     )
     .exec()
     .then((names)=>{
@@ -12,6 +11,7 @@ module.exports = (app) => {
       res.json(names);
     })
   })
+//get person by id
   app.put('/api/person/:id', (req, res, next) => {
     Person.findOne({name:req.params.id})
       .exec()
@@ -67,4 +67,16 @@ module.exports = (app) => {
     })
     .catch((err)=> next(err));
   })
+//approve vacation
+app.put('/api/approve/:id', (req, res, next) => {
+  Person.findOneAndUpdate({entries:{$elemMatch:{_id:req.params.id}}},{$set:{"entries.$.approved": true}},{new:true})
+    .exec()
+    .then((person) => {
+      console.log("PUT RES",person);
+      res.json(person)
+
+    })
+    .catch((err) => {console.log("ERROR");next(err)});
+});
+
 }

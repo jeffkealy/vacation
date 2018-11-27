@@ -17,10 +17,20 @@ class Admin extends Component{
     this.handleChange = this.handleChange.bind(this);
     this.deleteOneOffEntry = this.deleteOneOffEntry.bind(this);
     this.addOneOffEntry = this.addOneOffEntry.bind(this);
-
+    this.approveEntry = this.approveEntry.bind(this);
 
 
   }
+componentDidMount(){
+  fetch(`/api/person/names`)
+  .then(res => res.json())
+  .then(json =>{
+    console.log("GET People", json);
+    this.setState({
+      people:json
+    });
+  })
+}
 updateVacationDaysPerYear(){
     console.log("updateVacationDaysPerYear", this.state.employeeSelected._id, this.state.updateVacationHoursPerYear);
     if (!this.state.updateVacationHoursPerYear) {
@@ -83,6 +93,26 @@ deleteOneOffEntry(entry){
     })
   });
 }
+approveEntry(entry){
+  let id = entry._id
+  console.log(entry);
+  fetch(`/api/approve/${id}/`,
+    { method: 'PUT',
+      headers: {'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'},
+    })
+    .then(res => res.json())
+    .then(json => {
+      fetch(`/api/person/names`)
+      .then(res => res.json())
+      .then(json =>{
+        console.log("GET People", json);
+        this.setState({
+          people:json
+        });
+      })
+    });
+}
 handleChange(e){
   this.setState({
     employeeSelected: this.props.people[e]
@@ -96,31 +126,37 @@ render(){
           <div className="white-header">
             <h2>Approval Needed</h2>
           </div>
-          <table>
+          {this.state.people ?
+          <table >
+            <thead>
               <tr>
-                <th>Name</th>
-                <th>Start Date</th>
-                <th>End Date</th>
+                <th className="name">Name</th>
+                <th className="start-date">Start</th>
+                <th className="end-date">End</th>
                 <th>Days</th>
                 <th>Note</th>
+                <th>Approved</th>
                 <th>Approve</th>
               </tr>
-              {this.props.people.sort((a,b)=>(a.startDate-b.startDate)).map((people, i) =>(
-                <tbody key={i}>
-                {people.entries.map((entries,i2)=>(
-                <tr key={i2} className={entries.approved === false? "": "hidden"}>
-                  <td className="name"><span>{people.name}</span> <span> {people.lastName}</span></td>
-                  <td className="start-date">{new Date(entries.startDate).toLocaleDateString("en-US", {timeZone:'UTC'})}</td>
-                  <td className="endDate-date">{new Date(entries.endDate).toLocaleDateString("en-US", {timeZone:'UTC'})}</td>
-                  <td className="days-used">{(entries.hoursUsed+entries.subtractHalfDayHours)/8}</td>
-                  <td className="entry-note">{entries.note}</td>
-                  <td className="td-approval"><button onClick={()=>this.approveEntry(entries, i)} className=" approval-button"><TiThumbsUp className="thumbsUp-icon"/></button></td>
-                </tr>
-                ))}
-                </tbody>
-              ))}
-          </table>
+            </thead>
+            {this.state.people.sort((a,b)=>(a.startDate-b.startDate)).map((people, i) =>(
+              <tbody key={i} >
+              {people.entries.map((entries,i2)=>(
+              <tr key={i2} className={entries.approved === false ? "": "hidden"}>
+                <td className="name"><span>{people.name}</span> <span>{people.lastName}</span></td>
+                <td className="start-date">{new Date(entries.startDate).toLocaleDateString("en-US", {timeZone:'UTC'})}</td>
+                <td className="end-date">{new Date(entries.endDate).toLocaleDateString("en-US", {timeZone:'UTC'})}</td>
+                <td className="days-used">{(entries.hoursUsed+entries.subtractHalfDayHours)/8}</td>
+                <td className="entry-note">{entries.note}</td>
+                <td className="entry-note">{entries.approved}</td>
 
+                <td className="td-approval"><button onClick={()=>this.approveEntry(entries, i)} className=" approval-button"><TiThumbsUp className="thumbsUp-icon"/></button></td>
+              </tr>
+              ))}
+              </tbody>
+            ))}
+          </table>
+          :null}
         </div>
         <div className="admin-select-employee container">
           <div className="white-header">

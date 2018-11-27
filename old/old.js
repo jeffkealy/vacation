@@ -82,3 +82,29 @@ calculateHours(date){
 
 
 {this.state.person.entries.map((item, key)=>item.approved)===false?
+
+
+  <div className="approval-table">
+      <div className="table-row">
+        <span className="th">Name</span>
+        <span className="th">Start Date</span>
+        <span className="th">End Date</span>
+        <span className="th">Days</span>
+        <span className="th">Note</span>
+        <span className="th">Approve</span>
+      </div>
+      {this.props.people.sort((a,b)=>(a.startDate-b.startDate)).map((people, i) =>(
+        <div key={i} className="table-body">
+        {people.entries.map((entries,i2)=>(
+        <div key={i2} className={entries.approved === false? "table-row": "hidden table-row"}>
+          <span className="name td"><span>{people.name}</span> <span>{people.lastName}</span></span>
+          <span className="start-date td">{new Date(entries.startDate).toLocaleDateString("en-US", {timeZone:'UTC'})}</span>
+          <span className="endDate-date td">{new Date(entries.endDate).toLocaleDateString("en-US", {timeZone:'UTC'})}</span>
+          <span className="days-used td">{(entries.hoursUsed+entries.subtractHalfDayHours)/8}</span>
+          <span className="entry-note td">{entries.note}</span>
+          <span className="td-approval td"><button onClick={()=>this.approveEntry(entries, i)} className=" approval-button"><TiThumbsUp className="thumbsUp-icon"/></button></span>
+        </div>
+        ))}
+      </div>
+      ))}
+  </div>
