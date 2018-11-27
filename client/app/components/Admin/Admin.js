@@ -25,7 +25,16 @@ componentDidMount(){
   fetch(`/api/person/names`)
   .then(res => res.json())
   .then(json =>{
+    json.sort((a,b) => {
+      if(a.name < b.name) { return -1; }
+      if(a.name > b.name) { return 1; }
+      return 0;
+    });
+    for (var i = 0; i < json.length; i++) {
+      json[i].entries.sort((a,b)=>new Date(a.startDate)-new Date(b.startDate))
+    }
     console.log("GET People", json);
+
     this.setState({
       people:json
     });
@@ -106,6 +115,14 @@ approveEntry(entry){
       fetch(`/api/person/names`)
       .then(res => res.json())
       .then(json =>{
+        json.sort((a,b) => {
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        });
+        for (var i = 0; i < json.length; i++) {
+          json[i].entries.sort((a,b)=>new Date(a.startDate)-new Date(b.startDate))
+        }
         console.log("GET People", json);
         this.setState({
           people:json
@@ -135,11 +152,10 @@ render(){
                 <th className="end-date">End</th>
                 <th>Days</th>
                 <th>Note</th>
-                <th>Approved</th>
                 <th>Approve</th>
               </tr>
             </thead>
-            {this.state.people.sort((a,b)=>(a.startDate-b.startDate)).map((people, i) =>(
+            {[].concat(this.state.people).sort((a,b)=>(a.startDate-b.startDate)).map((people, i) =>(
               <tbody key={i} >
               {people.entries.map((entries,i2)=>(
               <tr key={i2} className={entries.approved === false ? "": "hidden"}>
@@ -148,8 +164,6 @@ render(){
                 <td className="end-date">{new Date(entries.endDate).toLocaleDateString("en-US", {timeZone:'UTC'})}</td>
                 <td className="days-used">{(entries.hoursUsed+entries.subtractHalfDayHours)/8}</td>
                 <td className="entry-note">{entries.note}</td>
-                <td className="entry-note">{entries.approved}</td>
-
                 <td className="td-approval"><button onClick={()=>this.approveEntry(entries, i)} className=" approval-button"><TiThumbsUp className="thumbsUp-icon"/></button></td>
               </tr>
               ))}

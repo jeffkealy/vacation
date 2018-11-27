@@ -17,6 +17,7 @@ class Details extends Component {
       note: "",
       hidden: false,
       vacationHoursUsed:0,
+      showHalfDay: false,
       halfDaySubtracted: false,
       subtractHalfDayHours:0,
       entryApproved: false
@@ -44,6 +45,7 @@ class Details extends Component {
     fetch(`/api/person/${id}`, {method: 'PUT'})
       .then(res => res.json())
       .then(json => {
+        json.entries.sort((a,b)=>new Date(a.startDate)-new Date(b.startDate))
         this.setState({
           person: json
         });
@@ -67,13 +69,16 @@ class Details extends Component {
       this.setState({
         startDate: startDate,
         endDate:endDate,
-        hoursToBeUsed: Math.round(((endDate - startDate)/one_day)*8)
+        hoursToBeUsed: Math.round(((endDate - startDate)/one_day)*8),
+        showHalfDay: true
       })
     } else {
       this.setState({
         startDate: startDate,
         endDate:endDate,
-        hoursToBeUsed: Math.round(((endDate - startDate)/one_day)*8)
+        hoursToBeUsed: Math.round(((endDate - startDate)/one_day)*8),
+        showHalfDay: true
+
       })
     }
 
@@ -92,6 +97,12 @@ class Details extends Component {
       });
       return 0
     }
+  }
+
+  subtractHalfDayHours(){
+    this.setState({halfDaySubtracted: !this.state.halfDaySubtracted},()=>{
+      this.setSubtractHalfDayHours();
+    });
   }
 
   addVacationDates(){
@@ -125,9 +136,12 @@ class Details extends Component {
       })
       .then(res => res.json())
       .then(json => {
+          json.entries.sort((a,b)=>new Date(a.startDate)-new Date(b.startDate))
           this.setState({
             person: json,
-            note: ""
+            note: "",
+            showHalfDay:false,
+
           })
           this.hoursCalculations(json)
       });
@@ -148,6 +162,7 @@ class Details extends Component {
       })
     .then(res => res.json())
     .then(json => {
+      json.entries.sort((a,b)=>new Date(a.startDate)-new Date(b.startDate))
       this.setState({
         person: json
       })
@@ -274,11 +289,6 @@ class Details extends Component {
     let timezoneDifference = earlierOffset - laterOffset;
     return timezoneDifference/60
   }
-  subtractHalfDayHours(){
-    this.setState({halfDaySubtracted: !this.state.halfDaySubtracted},()=>{
-      this.setSubtractHalfDayHours();
-    });
-  }
   entryApproved(){
     return true
   }
@@ -366,7 +376,7 @@ class Details extends Component {
                       </tr>
                     </thead>
 
-                    {this.state.person.entries.sort((a,b)=>(a.startDate-b.startDate)).map(
+                    {this.state.person.entries.map(
                       (entries, i) =>(
                     <tbody key={i}>
                       {entries.approved===false?
@@ -402,7 +412,7 @@ class Details extends Component {
                         <th>Note</th>
                       </tr>
                     </thead>
-                    {this.state.person.entries.sort((a,b)=>(a.startDate-b.startDate)).map((entries, i) =>(
+                    {this.state.person.entries.map((entries, i) =>(
                       <tbody key={i}>
                         <tr className={entries.approved === false? "red-background": ""}>
                           <td><button onClick={()=>this.deleteEntry(entries, i)} className="delete-button">x</button></td>
@@ -429,10 +439,11 @@ class Details extends Component {
                   selectRange={true}
                   showWeekNumbers={true}
                   tileClassName="calendar-tile"
+                  returnValue="range"
                 />
 
               </div>
-              <div className="subtract-half-day">
+              <div className={this.state.showHalfDay?"subtract-half-day" : "hidden"}>
                 <label><span>Subtract Half Day</span>
                 <input
                   className="checkbox"
@@ -444,7 +455,6 @@ class Details extends Component {
                   <span className="checkmark"></span>
                 </label>
               </div>
-
               <div className="add-entry-preview">
                 <div className="hours-used">
                   <span>Using </span>

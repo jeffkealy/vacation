@@ -21,6 +21,11 @@ class Home extends Component {
     fetch(`/api/person/names`)
     .then(res => res.json())
     .then(json =>{
+      json.sort((a,b) => {
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      });
       console.log("GET People", json);
       this.setState({
         people:json
@@ -46,7 +51,7 @@ class Home extends Component {
 
         <p className= {this.state.showPeople ? 'people-title' :'hidden'}>People</p>
         <ul className={this.state.showPeople ? 'people-list' :'hidden' }>
-          { this.state.people.map((people, i) => (
+          {[].concat(this.state.people).sort((a,b)=>a.peopleM > b.peopleM).map((people, i) => (
               <li key={i} className='people'>
                 <button onClick={() => this.getDetails(people)} className="home-button">{this.state.people[i].name}</button>
               </li>
