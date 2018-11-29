@@ -15,6 +15,8 @@ module.exports = merge(commonConfig, {
   },
 
   plugins: [
-    new Dotenv()
+    new Dotenv({
+          path: '../.env'
+        })
   ]
 });
