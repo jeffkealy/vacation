@@ -477,7 +477,7 @@ class Details extends Component {
               <button onClick={this.addVacationDates}className="add-entry-button" >Add</button>
             </div>
           </div>
-        :null}
+        :<div>No User</div>}
       </div>
       </>
     );
