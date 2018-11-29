@@ -27,7 +27,9 @@ class Login extends Component {
                 console.log("removeItem", firebaseAuthKey);
             });
         localStorage.setItem(firebaseAuthKey, "1");
-        console.log("setItem", firebaseAuthKey);
+        console.log("handleGoogleLogin setItem", firebaseAuthKey);
+        console.log("REACT_APP_text", process.env.REACT_APP_text);
+
     }
 
     componentDidMount() {
@@ -69,6 +71,8 @@ class Login extends Component {
         if (localStorage.getItem("userEmail")) {
             // this.props.history.push("/home");
             console.log("User from storage", localStorage.getItem("userEmail"), this.state.userEmail);
+            console.log("REACT_APP_text", process.env.REACT_APP_text);
+
             return;
         }
 
