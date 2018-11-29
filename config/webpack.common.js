@@ -7,6 +7,15 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const helpers = require('./helpers');
 
 const NODE_ENV = process.env.NODE_ENV;
+const REACT_APP_apiKey=process.env.REACT_APP_apiKey;
+const REACT_APP_authDomain=process.env.REACT_APP_authDomain;
+const REACT_APP_databaseURL=process.env.REACT_APP_databaseURL;
+const REACT_APP_messagingSenderId=process.env.REACT_APP_messagingSenderId;
+const REACT_APP_projectId=process.env.REACT_APP_projectId;
+const REACT_APP_storageBucket=process.env.REACT_APP_storageBucket;
+
+const REACT_APP_text=process.env.REACT_APP_text;
+
 const isProd = NODE_ENV === 'production';
 
 module.exports = {
@@ -86,7 +95,14 @@ module.exports = {
 
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify(NODE_ENV)
+        NODE_ENV: JSON.stringify(NODE_ENV),
+        REACT_APP_apiKey: JSON.stringify(REACT_APP_apiKey),
+        REACT_APP_authDomain: JSON.stringify(REACT_APP_authDomain),
+        REACT_APP_databaseURL: JSON.stringify(REACT_APP_databaseURL),
+        REACT_APP_messagingSenderId: JSON.stringify(REACT_APP_messagingSenderId),
+        REACT_APP_projectId: JSON.stringify(REACT_APP_projectId),
+        REACT_APP_storageBucket: JSON.stringify(REACT_APP_storageBucket),
+        REACT_APP_text: JSON.stringify(REACT_APP_text)
       }
     }),
 

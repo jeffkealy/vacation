@@ -15,6 +15,6 @@ module.exports = merge(commonConfig, {
   },
 
   plugins: [
-
+  
   ]
 });

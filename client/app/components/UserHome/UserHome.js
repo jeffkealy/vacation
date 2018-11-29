@@ -41,7 +41,9 @@ class Details extends Component {
 
   componentDidMount() {
     let email = this.props.email
+
     console.log("COMPONENTDIDMOUNT", this.props.email);
+    console.log("env", process.env.REACT_APP_text);
     fetch(`/api/user/${email}`, {method: 'PUT'})
       .then(res => res.json())
       .then(json => {

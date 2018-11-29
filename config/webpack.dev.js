@@ -27,8 +27,6 @@ module.exports = merge(commonConfig, {
     stats: 'errors-only' // none (or false), errors-only, minimal, normal (or true) and verbose
   },
   plugins: [
-    new Dotenv({
-          path: '../.env'
-        })
+    
     ]
 });
