@@ -27,6 +27,7 @@ class Home extends Component {
         return 0;
       });
       console.log("GET People", json);
+      console.log(process.env.REACT_APP_apiKey);
       this.setState({
         people:json
       });

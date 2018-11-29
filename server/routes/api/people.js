@@ -13,6 +13,7 @@ module.exports = (app) => {
   })
 //get person by id
   app.put('/api/person/:id', (req, res, next) => {
+    console.log(req.params.id);
     Person.findOne({name:req.params.id})
       .exec()
       .then(
@@ -24,6 +25,20 @@ module.exports = (app) => {
       )
       .catch((err) => next(err));
   });
+  //get person by email
+    app.put('/api/user/:email', (req, res, next) => {
+      console.log("BBBBB",req.params.email );
+      Person.findOne({email:req.params.email})
+        .exec()
+        .then(
+          (people) => {
+            res.json(people);
+            console.log("AAAAAAA", people)
+          }
+
+        )
+        .catch((err) => next(err));
+    });
 //add entry
   app.put('/api/people/:id/entry', (req, res, next) => {
     Person.findOneAndUpdate({ _id: req.params.id},{$set:{vacationHoursRemaining:req.body.vacationHoursRemaining},$push: {entries:req.body.entry}},{new:true})

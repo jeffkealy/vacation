@@ -4,7 +4,7 @@ const PersonSchema = new mongoose.Schema({
     name: String,
     lastName: String,
     email: String,
-    password: String,
+    admin: Boolean,
     vacationHoursRemaining: Number,
     vacationHoursPerYear: Number,
     beginDate:Date,

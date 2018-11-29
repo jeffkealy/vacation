@@ -40,8 +40,9 @@ class Details extends Component {
 
 
   componentDidMount() {
-    let id = this.props.person.name
-    fetch(`/api/person/${id}`, {method: 'PUT'})
+    let email = this.props.email
+    console.log("COMPONENTDIDMOUNT", this.props.email);
+    fetch(`/api/user/${email}`, {method: 'PUT'})
       .then(res => res.json())
       .then(json => {
         json.entries.sort((a,b)=>new Date(a.startDate)-new Date(b.startDate))
@@ -295,9 +296,9 @@ class Details extends Component {
   render() {
     return (
       <>
-
+        <div className="home-container">
           {this.state.person ?
-            <div className="details">
+            <div className="details-container">
 
             <div className="details-title">
               <h1>{this.state.person.name} {this.state.person.lastName}</h1>
@@ -307,9 +308,6 @@ class Details extends Component {
                 :null}
               </h3>
             </div>
-
-
-
             <div className="vacation-days-details container">
               <div className="white-header">
                 <h2 className="vacation-days-details-header "> PTO Days</h2>
@@ -480,7 +478,7 @@ class Details extends Component {
             </div>
           </div>
         :null}
-
+      </div>
       </>
     );
   }
