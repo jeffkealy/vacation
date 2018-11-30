@@ -70,15 +70,14 @@ class Login extends Component {
 
         if (localStorage.getItem("userEmail")) {
             // this.props.history.push("/home");
-            console.log("User from storage", localStorage.getItem("userEmail"), this.state.userEmail);
-            console.log("REACT_APP_text", process.env.REACT_APP_text);
+            // console.log("User from storage", localStorage.getItem("userEmail"), this.state.userEmail);
+            // console.log("REACT_APP_text", process.env.REACT_APP_text);
 
             return;
         }
 
         firebaseAuth().onAuthStateChanged(user => {
             if (user) {
-                console.log("User signed in: ", JSON.stringify(user));
 
                 localStorage.removeItem(firebaseAuthKey);
 
@@ -96,13 +95,13 @@ class Login extends Component {
                 })
 
                 // this.props.history.push("/home")
-                console.log("user" , localStorage.getItem("userEmail"));
+                // console.log("user" , localStorage.getItem("userEmail"));
             }
         });
     }
 
     render() {
-        console.log(firebaseAuthKey + "=" + localStorage.getItem(firebaseAuthKey));
+        // console.log(firebaseAuthKey + "=" + localStorage.getItem(firebaseAuthKey));
         if (localStorage.getItem(firebaseAuthKey) === "1") return <SplashScreen />;
         if (localStorage.getItem("userEmail")) return <UserHome email={localStorage.getItem("userEmail")}/>
         return <LoginPage handleGoogleLogin={this.handleGoogleLogin}/>;

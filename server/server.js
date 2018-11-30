@@ -13,7 +13,7 @@ require('dotenv').config();
 const isDev = process.env.NODE_ENV !== 'production';
 const port  = process.env.PORT || 8080;
 
-console.log("Server.js port", port, process.env.text);
+
 // Configuration
 // ================================================================================================
 

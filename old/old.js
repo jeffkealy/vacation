@@ -111,3 +111,6 @@ calculateHours(date){
 
 
 firebase 4.6.2
+
+Update available 5.6.0 → 6.4.1    │
+Run npm i -g npm to update

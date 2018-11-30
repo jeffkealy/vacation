@@ -14,7 +14,6 @@ import App from './components/App/App';
 import Login from './components/Login/Login';
 import NotFound from './components/App/NotFound';
 import Home from './components/Home/Home';
-import HelloWorld from './components/HelloWorld/HelloWorld';
 import './styles/styles.scss';
 
 render((

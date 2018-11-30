@@ -19,7 +19,8 @@ class Details extends Component {
       showHalfDay: false,
       halfDaySubtracted: false,
       subtractHalfDayHours:0,
-      entryApproved: false
+      entryApproved: false,
+      noUser:false
     };
     this.addVacationDates = this.addVacationDates.bind(this);
     this.dateSet = this.dateSet.bind(this);
@@ -43,15 +44,15 @@ class Details extends Component {
     let email = this.props.email
 
     console.log("COMPONENTDIDMOUNT", this.props.email);
-    console.log("env", process.env.REACT_APP_text);
     fetch(`/api/user/${email}`, {method: 'PUT'})
       .then(res => res.json())
       .then(json => {
+        if (!json) {this.setState({noUser:true})};
+        console.log("componentDidMount json", json);
         json.entries.sort((a,b)=>new Date(a.startDate)-new Date(b.startDate))
         this.setState({
           person: json
         });
-        console.log("componentDidMount json", json);
         this.hoursCalculations(json)
         console.log("#####",this.state.person);
       });
@@ -298,7 +299,7 @@ class Details extends Component {
   render() {
     return (
       <>
-        <div className="home-container">
+        <div className="userHome-container">
           {this.state.person ?
             <div className="details-container">
 
@@ -479,7 +480,7 @@ class Details extends Component {
               <button onClick={this.addVacationDates}className="add-entry-button" >Add</button>
             </div>
           </div>
-        :<div>No User</div>}
+        :<div className={this.state.noUser? "":"hidden"}>Couldn't Retrieve User</div>}
       </div>
       </>
     );

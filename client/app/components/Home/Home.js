@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import 'whatwg-fetch';
 import Details from '../Details/Details';
 import Admin from '../Admin/Admin';
+import UserHome from "../UserHome/UserHome"
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -48,7 +50,6 @@ class Home extends Component {
     return (
       <>
       <div className="home-container">
-
         <p className= {this.state.showPeople ? 'people-title' :'hidden'}>People</p>
         <ul className={this.state.showPeople ? 'people-list' :'hidden' }>
           {[].concat(this.state.people).sort((a,b)=>a.peopleM > b.peopleM).map((people, i) => (
@@ -61,7 +62,7 @@ class Home extends Component {
         { this.state.showDetails ?
             <div className="details-container">
               <button className="back-button action-button" onClick={() => this.setState({showDetails: false, showPeople:true, showAdmin:false})}>Back</button>
-              <Details person={this.state.person} people={this.state.people}/>
+              <UserHome person={this.state.person} people={this.state.people} email={this.state.person.email}/>
             </div>
             : null
         }
