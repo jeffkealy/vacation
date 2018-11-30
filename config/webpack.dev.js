@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const Dotenv = require('dotenv-webpack');
 
 
 const commonConfig = require('./webpack.common');
@@ -27,6 +26,6 @@ module.exports = merge(commonConfig, {
     stats: 'errors-only' // none (or false), errors-only, minimal, normal (or true) and verbose
   },
   plugins: [
-    
+
     ]
 });

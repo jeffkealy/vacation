@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const Dotenv = require('dotenv-webpack');
 
 
 const helpers = require('./helpers');
@@ -15,6 +14,6 @@ module.exports = merge(commonConfig, {
   },
 
   plugins: [
-  
+
   ]
 });
