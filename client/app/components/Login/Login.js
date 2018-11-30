@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {loginWithGoogle} from "../Firebase/auth";
+import {loginWithGoogle, logout} from "../Firebase/auth";
 import {firebaseAuth} from "../Firebase/firebase";
 
 import UserHome from "../UserHome/UserHome"
@@ -17,6 +17,8 @@ class Login extends Component {
         };
 
         this.handleGoogleLogin = this.handleGoogleLogin.bind(this);
+        this.handleLogout = this.handleLogout.bind(this);
+
     }
 
     handleGoogleLogin() {
@@ -30,8 +32,23 @@ class Login extends Component {
         console.log("handleGoogleLogin setItem", firebaseAuthKey);
         console.log("REACT_APP_text", process.env.REACT_APP_text);
 
+
+
     }
 
+    handleLogout(){
+      logout()
+        .catch(function (error) {
+            alert(error); // or show toast
+            localStorage.removeItem(firebaseAuthKey);
+            console.log("removeItem", firebaseAuthKey);
+        });
+        localStorage.setItem(firebaseAuthKey, "0");
+        localStorage.removeItem("userEmail")
+        this.props.history.push("/");
+        console.log("handleGoogleLogin setItem", firebaseAuthKey);
+        console.log("REACT_APP_text", process.env.REACT_APP_text);
+    }
     componentDidMount() {
         console.log("componentDidMount");
         // firebaseAuth().getRedirectResult().then(function(result) {
@@ -70,7 +87,7 @@ class Login extends Component {
 
         if (localStorage.getItem("userEmail")) {
             // this.props.history.push("/home");
-            // console.log("User from storage", localStorage.getItem("userEmail"), this.state.userEmail);
+            console.log("User from storage", localStorage.getItem("userEmail"), this.state.userEmail);
             // console.log("REACT_APP_text", process.env.REACT_APP_text);
 
             return;
@@ -102,12 +119,27 @@ class Login extends Component {
 
     render() {
         // console.log(firebaseAuthKey + "=" + localStorage.getItem(firebaseAuthKey));
-        if (localStorage.getItem(firebaseAuthKey) === "1") return <SplashScreen />;
-        if (localStorage.getItem("userEmail")) return <UserHome email={localStorage.getItem("userEmail")}/>
-        return <LoginPage handleGoogleLogin={this.handleGoogleLogin}/>;
+        if (localStorage.getItem(firebaseAuthKey) === "1") return(
+          <div>
+            <SplashScreen />
+            <LogoutPage handleLogout={this.handleLogout}/>
+          </div>
+        );
+        if (localStorage.getItem("userEmail")) return (
+          <div>
+            <UserHome email={localStorage.getItem("userEmail")}/>
+            <LogoutPage handleLogout={this.handleLogout}/>
+
+          </div>
+        )
+        return (
+          <div>
+            <LoginPage handleGoogleLogin={this.handleGoogleLogin}/>
+          </div>
+        )
     }
 }
-export default Login
+export default Login;
 
 const LoginPage = ({handleGoogleLogin}) => (
     <div>
@@ -116,5 +148,9 @@ const LoginPage = ({handleGoogleLogin}) => (
             <button onClick={handleGoogleLogin} className="action-button"> Sign in</button>
         </div>
     </div>
+);
+const LogoutPage = ({handleLogout}) => (
+  <button onClick={handleLogout} className="action-button log-out-button"> Log Out</button>
+
 );
 const SplashScreen = () => (<p>Loading...</p>)

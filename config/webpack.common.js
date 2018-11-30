@@ -95,15 +95,15 @@ module.exports = {
 
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify(NODE_ENV),
-        REACT_APP_apiKey: JSON.stringify(REACT_APP_apiKey),
-        REACT_APP_authDomain: JSON.stringify(REACT_APP_authDomain),
-        REACT_APP_databaseURL: JSON.stringify(REACT_APP_databaseURL),
-        REACT_APP_messagingSenderId: JSON.stringify(REACT_APP_messagingSenderId),
-        REACT_APP_projectId: JSON.stringify(REACT_APP_projectId),
-        REACT_APP_storageBucket: JSON.stringify(REACT_APP_storageBucket),
-        REACT_APP_text: JSON.stringify(REACT_APP_text)
-      }
+                        NODE_ENV: JSON.stringify(NODE_ENV),
+                        REACT_APP_apiKey: JSON.stringify(REACT_APP_apiKey),
+                        REACT_APP_authDomain: JSON.stringify(REACT_APP_authDomain),
+                        REACT_APP_databaseURL: JSON.stringify(REACT_APP_databaseURL),
+                        REACT_APP_messagingSenderId: JSON.stringify(REACT_APP_messagingSenderId),
+                        REACT_APP_projectId: JSON.stringify(REACT_APP_projectId),
+                        REACT_APP_storageBucket: JSON.stringify(REACT_APP_storageBucket),
+                        REACT_APP_text: JSON.stringify(REACT_APP_text)
+                      }
     }),
 
     new HtmlWebpackPlugin({
