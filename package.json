@@ -10,7 +10,7 @@
   "private": true,
   "scripts": {
     "heroku-postbuild": "npm run build",
-    "start": "node server",
+    "start": "node server.js",
     "start:dev": "node server",
     "test": "nodemon server",
     "build": "webpack -p --progress --profile --colors"
