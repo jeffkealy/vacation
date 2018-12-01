@@ -9,10 +9,11 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "heroku-postbuild": "webpack -p --progress --profile --colors",
+    "heroku-postbuild": "npm run build",
     "start": "node server",
     "start:dev": "node server",
-    "test": "nodemon server"
+    "test": "nodemon server",
+    "build": "webpack -p --progress --profile --colors"
   },
   "engines": {
     "node": ">=6"
