@@ -13,6 +13,7 @@
     "start": "webpack -p --progress --profile --colors && node server",
     "start:dev": "node server",
     "start:prod": "node server",
+    "test": "node server webpack -p --progress --profile --colors",
     "build": "webpack -p --progress --profile --colors",
     "postinstall": "echo \"Error: no postinstall specified\" "
   },
