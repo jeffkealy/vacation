@@ -12,7 +12,7 @@
     "heroku-postbuild": "webpack -p --profile --colors",
     "start": "node server",
     "start:dev": "node server",
-    "test": "nodemon server",
+    "test": "nodemon server"
   },
   "engines": {
     "node": ">=6"
