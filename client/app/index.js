@@ -19,11 +19,11 @@ import './styles/styles.scss';
 render((
       <Router>
         <App>
-            <Switch>
-              <Route exact path="/" component={Login}/>
-              <Route path="/home" component={Home}/>
-              <Route component={NotFound}/>
-            </Switch>
+          <Switch>
+            <Route exact path="/" component={Login}/>
+            <Route path="/home" component={Home}/>
+            <Route component={NotFound}/>
+          </Switch>
         </App>
       </Router>
 ), document.getElementById('app'));
