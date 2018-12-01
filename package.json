@@ -9,8 +9,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "postinstall": "webpack -p --progress --profile --colors",
-    "start": "node server",
+    "postinstall": "node server",
+    "start": "webpack -p --profile --colors",
     "start:dev": "node server",
     "test": "nodemon server"
   },
