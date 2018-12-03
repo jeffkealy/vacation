@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import {loginWithGoogle, logout} from "../Firebase/auth";
 import {firebaseAuth} from "../Firebase/firebase";
-
 import UserHome from "../UserHome/UserHome"
+import Logout from "../Logout/Logout"
 
 const firebaseAuthKey = "firebaseAuthInProgress";
 const appTokenKey = "appToken";
@@ -37,17 +37,19 @@ class Login extends Component {
     }
 
     handleLogout(){
-      logout()
-        .catch(function (error) {
-            alert(error); // or show toast
-            localStorage.removeItem(firebaseAuthKey);
-            console.log("removeItem", firebaseAuthKey);
-        });
-        localStorage.setItem(firebaseAuthKey, "0");
-        localStorage.removeItem("userEmail")
-        this.props.history.push("/");
-        console.log("handleGoogleLogin setItem", firebaseAuthKey);
-        console.log("REACT_APP_text", process.env.REACT_APP_text);
+      console.log(this.props.history);
+
+      // logout()
+      //   .catch(function (error) {
+      //       alert(error); // or show toast
+      //       localStorage.removeItem(firebaseAuthKey);
+      //       console.log("removeItem", firebaseAuthKey);
+      //   });
+      //   localStorage.setItem(firebaseAuthKey, "0");
+      //   localStorage.removeItem("userEmail")
+      //   this.props.history.push("/");
+      //   console.log("handleGoogleLogin setItem", firebaseAuthKey);
+      //   console.log("REACT_APP_text", process.env.REACT_APP_text);
     }
     componentDidMount() {
         console.log("componentDidMount");
@@ -122,13 +124,13 @@ class Login extends Component {
         if (localStorage.getItem(firebaseAuthKey) === "1") return(
           <div>
             <SplashScreen />
-            <LogoutPage handleLogout={this.handleLogout}/>
+            <Logout history={this.props.history}/>
           </div>
         );
         if (localStorage.getItem("userEmail")) return (
           <div>
             <UserHome email={localStorage.getItem("userEmail")}/>
-            <LogoutPage handleLogout={this.handleLogout}/>
+            <Logout history={this.props.history}/>
 
           </div>
         )
@@ -148,9 +150,5 @@ const LoginPage = ({handleGoogleLogin}) => (
             <button onClick={handleGoogleLogin} className="action-button"> Sign in</button>
         </div>
     </div>
-);
-const LogoutPage = ({handleLogout}) => (
-  <button onClick={handleLogout} className="action-button log-out-button"> Log Out</button>
-
 );
 const SplashScreen = () => (<p>Loading...</p>)

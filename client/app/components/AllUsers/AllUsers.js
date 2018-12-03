@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import 'whatwg-fetch';
 import Details from '../Details/Details';
 import Admin from '../Admin/Admin';
-import UserHome from "../UserHome/UserHome"
 
 class Home extends Component {
   constructor(props) {
@@ -12,7 +11,6 @@ class Home extends Component {
       people: [],
       showDetails: false,
       showPeople: true,
-      showAdmin: false,
       monthlyAccrualAdded: false,
       updateHours: []
     };
@@ -49,34 +47,22 @@ class Home extends Component {
   render() {
     return (
       <>
-      <div className="home-container">
-        <p className= {this.state.showPeople ? 'people-title' :'hidden'}>People</p>
+      <div className="all-users-container container">
+        <div className={this.state.showPeople ? 'people-title white-header' :'hidden'}><h2>People</h2></div>
         <ul className={this.state.showPeople ? 'people-list' :'hidden' }>
           {[].concat(this.state.people).sort((a,b)=>a.peopleM > b.peopleM).map((people, i) => (
               <li key={i} className='people'>
-                <button onClick={() => this.getDetails(people)} className="home-button">{this.state.people[i].name}</button>
+                <button onClick={() => this.getDetails(people)} className="home-button action-button">{this.state.people[i].name}</button>
               </li>
             ))}
 
         </ul>
         { this.state.showDetails ?
-            <div className="details-container">
+            <div className="userHome-container">
               <button className="back-button action-button" onClick={() => this.setState({showDetails: false, showPeople:true, showAdmin:false})}>Back</button>
-              <UserHome person={this.state.person} people={this.state.people} email={this.state.person.email}/>
+              <Details person={this.state.person} people={this.state.people} email={this.state.person.email}/>
             </div>
             : null
-        }
-        { this.state.showPeople ?
-          <button onClick={()=> this.setState({showAdmin:true, showPeople:false})} className="home-button admin-button">Admin</button>
-          :null
-        }
-        {this.state.showAdmin ?
-          <div>
-
-            <button className="back-button action-button admin" onClick={() => this.setState({showAdmin: false, showPeople:true})}>Back</button>
-            <Admin people={this.state.people}/>
-          </div>
-          :null
         }
       </div>
 

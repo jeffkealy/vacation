@@ -19,7 +19,12 @@ class Details extends Component {
       showHalfDay: false,
       halfDaySubtracted: false,
       subtractHalfDayHours:0,
-      entryApproved: false
+      entryApproved: false,
+      updateVacationHoursPerYear: "",
+      oneOffHours: "",
+      oneOffNote:""
+
+
     };
     this.addVacationDates = this.addVacationDates.bind(this);
     this.dateSet = this.dateSet.bind(this);
@@ -32,26 +37,30 @@ class Details extends Component {
     this.setSubtractHalfDayHours = this.setSubtractHalfDayHours.bind(this);
     this.entryApproved = this.entryApproved.bind(this);
     this.calculateHalfDays = this.calculateHalfDays.bind(this);
-
-
-
-
+    this.updateVacationDaysPerYear = this.updateVacationDaysPerYear.bind(this);
+    this.deleteOneOffEntry = this.deleteOneOffEntry.bind(this);
+    this.addOneOffEntry = this.addOneOffEntry.bind(this);
   }
 
 
   componentDidMount() {
-    let id = this.props.person.name
-    fetch(`/api/person/${id}`, {method: 'PUT'})
-      .then(res => res.json())
-      .then(json => {
-        json.entries.sort((a,b)=>new Date(a.startDate)-new Date(b.startDate))
-        this.setState({
-          person: json
-        });
-        console.log("componentDidMount json", json);
-        this.hoursCalculations(json)
-        console.log("#####",this.state.person);
-      });
+    // let email = this.props.person.email;
+    // fetch(`/api/person/${email}`, {method: 'PUT'})
+    //   .then(res => res.json())
+    //   .then(json => {
+    //     json.entries.sort((a,b)=>new Date(a.startDate)-new Date(b.startDate))
+    //     this.setState({
+    //       person: json
+    //     });
+    //     console.log("componentDidMount json", json);
+    //     this.hoursCalculations(json)
+    //     console.log("#####",this.state.person);
+    //   });
+    this.setState({
+      person: this.props.person
+    },()=>{
+      this.hoursCalculations(this.state.person)
+    })
   }
 
   dateSet(date){
@@ -169,6 +178,69 @@ class Details extends Component {
         this.hoursCalculations(json)
     });
   }
+  addOneOffEntry(){
+    let id = this.state.person._id
+    let data = {
+      oneOffHours:this.state.oneOffHours*8,
+      note: this.state.oneOffNote,
+      date: new Date()
+    }
+    fetch(`/api/people/${id}/addOneOff`,
+      { method: 'PUT',
+        headers: {'Accept': 'application/json, text/plain, */*',
+                  'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(json => {
+          this.setState({
+            person: json,
+            oneOffNote: "",
+            oneOffHours: ""
+          },()=>this.hoursCalculations(json))
+      });
+  }
+  deleteOneOffEntry(entry){
+    console.log(entry);
+    let id = this.state.person._id
+    fetch(`/api/people/${id}/deleteOneOff`,
+      {
+        method:'DELETE',
+        headers: {'Accept': 'application/json, text/plain, */*',
+                  'Content-Type': 'application/json'},
+        body: JSON.stringify(entry)
+      })
+    .then(res => res.json())
+    .then(json => {
+      this.setState({
+        person: json
+      },()=>this.hoursCalculations(json))
+    });
+  }
+
+  updateVacationDaysPerYear(){
+      console.log("updateVacationDaysPerYear", this.state.person._id, this.state.updateVacationHoursPerYear);
+      if (!this.state.updateVacationHoursPerYear) {
+        return
+      } else {
+        let person = this.state.person;
+        let e = this.state.updateVacationHoursPerYear;
+        fetch(`/api/people/${person._id}/hoursPerCycle/${e}`,
+          { method: 'PUT',
+            headers: {'Accept': 'application/json, text/plain, */*',
+                      'Content-Type': 'application/json'},
+          })
+          .then(res => res.json())
+          .then(json => {
+            console.log("hoursPerCycle", json);
+            this.setState({
+              person: json,
+              updateVacationHoursPerYear: ""
+
+            },()=>this.hoursCalculations(json))
+          });
+      }
+  }
   calculateHoursUsed(person){
   if(person.entries){
     let hoursUsed = {
@@ -242,7 +314,6 @@ class Details extends Component {
         console.log("in 3rd year", new Date(currentYear), beginDate.getFullYear());
         hoursWorkedLastYear = 8760
       }
-
       let daysAccruedSinceStart = (Math.ceil((hoursAccruedSinceStart/24)*2)/2)+oneOffAdditionDays;
       let daysAccruedlastYear = (Math.ceil(((hoursWorkedLastYear/24)*hoursAccruedPerDay)-hoursUsed.lastYear/8)*2)/2
       if (daysAccruedlastYear > 5) {daysAccruedlastYear=5}
@@ -264,6 +335,8 @@ class Details extends Component {
 
 
   }
+
+
   calculateOneOffAdditions(person){
     if(person.oneOffAdditions){
       let oneOffAdditionHours = 0
@@ -297,7 +370,7 @@ class Details extends Component {
       <>
 
           {this.state.person ?
-            <div className="details">
+            <div className="details-container">
 
             <div className="details-title">
               <h1>{this.state.person.name} {this.state.person.lastName}</h1>
@@ -307,8 +380,6 @@ class Details extends Component {
                 :null}
               </h3>
             </div>
-
-
 
             <div className="vacation-days-details container">
               <div className="white-header">
@@ -358,6 +429,70 @@ class Details extends Component {
 
               </div>
             </div>
+
+            <div className="admin-vacation-hours-per-year container">
+              <div className="white-header">
+                <h3>PTO days per year</h3>
+              </div>
+              <h4 className="vacation-hours-per-year">{this.state.person.vacationHoursPerYear/8}</h4>
+              <div className="hours-per-year-update">
+                <label><span className="update-label">Update</span>
+                   <input
+                     value={this.state.updateVacationHoursPerYear}
+                     type="number"
+                     onChange={(e)=>this.setState({updateVacationHoursPerYear:e.target.value})}
+                     className="update-vacation-hours-input"
+                     min="0"
+                     placeholder=" "
+                   />
+                 </label>
+                 <button className="update-vacation-submit-button back-button action-button" onClick={()=>this.updateVacationDaysPerYear()}>Submit</button>
+              </div>
+            </div>
+            <div className="admin-oneOffs container">
+              <div className="white-header">
+                <h3>Add/Subtract</h3>
+              </div>
+              <h5>Add or subtract one off hours. Use negative number to stubtract</h5>
+                <label> Days
+                  <input
+                    value = {this.state.oneOffHours}
+                    className='oneOff-days-input'
+                    type="number"
+                    onChange={(e)=>this.setState({oneOffHours:e.target.value})}
+                    />
+                </label>
+                <label> Note
+                  <input
+                    value = {this.state.oneOffNote}
+                    className='oneOff-note-input'
+                    type="text"
+                    onChange={(e)=>this.setState({oneOffNote:e.target.value})}
+                    />
+                </label>
+                  <button onClick={()=>this.addOneOffEntry()} className='submit-button action-button'>Submit</button>
+
+                <table className="admin-oneOffs-table">
+                  <tbody>
+                    <tr>
+                      <th></th>
+                      <th className="th-date">Date</th>
+                      <th>Days</th>
+                      <th>Note</th>
+                    </tr>
+                    {this.state.person.oneOffAdditions.map((entries, i) =>(
+                      <tr key={i}>
+                        <td><button onClick={()=>this.deleteOneOffEntry(entries, i)} className="delete-button">x</button></td>
+                        <td className="oneOffs-date">{new Date(entries.date).toLocaleDateString("en-US", {timeZone:'UTC'})}</td>
+                        <td className="oneOffs-hours">{entries.oneOffHours/8}</td>
+                        <td className="oneOffs-note">{entries.note}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+
+
             <div className="view-entry container">
               <div className="white-header">
                 <h2>PTO Entries</h2>

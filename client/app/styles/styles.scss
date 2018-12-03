@@ -149,245 +149,19 @@ main{
        padding-left: 0;
        padding-right: 0;
      }
-    .people-title{
-      background: #000;
-      padding: 20px;
-      display: inline-block;
-      min-width: 200px;
-      border-radius: 50px;
-      border: 1px solid rgba(255, 255, 255, 0.65);
-      margin: 0;
-      color: #fff;
-      font-size: 32px;
-    }
-    .people-list{
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 70px 40px 30px;
-      border-radius: 15px;
-      margin: -43px auto 18px;
-      border: 1px solid rgba(255, 255, 255, 0.65);
-      max-width: 400px;
-
-      .people{
-        list-style: none;
-        margin: 0;
-        padding: 0px;
-      }
-    }
   }
-
-}
-.admin-button.home-button{
-  background-color: rgba(255, 138, 138, 0.90);
-}
-.admin-button.home-button:hover{
-  background-color: rgba(249, 43, 43, 0.87);
-}
-.admin-title{
-  padding-bottom: 35px;
-}
-.admin-container{
-  text-align: left;
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-  .admin-apporval{
-    margin: 0 auto;
-    max-width: 460px;
-    padding: 0px 10px 15px;
-    table{
-      margin: 5px auto 15px;
-      border-spacing: 0px;
-    }
-    .days-used{
-      text-align: center;
-    }
-    tr{
-
-    }
-    tr td:first-child{
-      border-radius: 50px 0 0 50px;
-    }
-    tr td:last-child{
-      border-radius: 0 50px 50px 0;
-
-    }
-    th{
-      vertical-align: bottom;
-      font-weight: 300;
-      border-bottom: 5px solid rgba(0, 0, 0, 0.65);;
-      text-align: center;
-
-    }
-    td{
-      vertical-align: middle;
-      height: 45px;
-      background-color: rgba(62, 89, 93, 0.53);
-      padding-bottom: 0px;
-      padding-left: 6px;
-      padding-right: 3px;
-      border-bottom: 5px solid rgba(0, 0, 0, 0.65);
-      border-top: 5px solid rgba(0, 0, 0, 0.65);
-      text-align: center;
-      &.entry-note{
-        max-width: 30px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-      }
-    }
-    .td-approval{
-      text-align: center;
-      .approval-button{
-        display: inline-grid;
-        font-weight: 700;
-        margin: 0px auto 0;
-        color: rgba(43, 43, 43, 0.78);
-        background-color: $action-bkrnd;
-        border-radius: 50%;
-        border: none;
-        padding: 0px 0px 3px 0px;
-        height: 28px;
-        width: 28px;
-        .thumbsUp-icon{
-          font-size: 27px;
-          margin-top: 1px;
-        }
-      }
-    }
-    .approval-button:hover{
-      color: #fff;
-      outline: none;
-      background-color: green;
-      box-shadow: 0px 0px 11px rgba(255, 255, 255, 0.75);
-    }
-    .approval-button:active{
-      box-shadow: 0px 0px 11px rgba(255, 255, 255, 0.95);
-    }
-
-  }
-  .admin-select-employee{
-    text-align: center;
-    select{
-      margin: 10px 0;
-      background-color: #49c5b6;
-      border: none;
-      padding: 10px;
-      option{
-        font-size: 14px;
-        background-color: #fff;
-
-      }
-    }
-  }
-  .employee{
-    .employee-name{
-      margin: 0
-    }
-    .start-date{
-      margin-top: 5px;
-    }
-  }
-  .admin-vacation-hours-per-year{
-    h3{
-      margin: 5px 0;
-    }
-    .vacation-hours-per-year{
-      font-size: 32px;
-      margin: 10px 0;
-    }
-    .hours-per-year-update{
-      text-align: center;
-    }
-  }
-  label{
-    display: inline-block;
-    margin: 0 8px 8px 0;
-    text-align: left;
-
-  }
-  .update-label{
-    padding-right: 6px;
-    display: block;
-    text-align: center;
-
-  }
-  .update-vacation-hours-input{
-    width: 60px;
-    text-align: center;
-    padding:10px 20px;
-    border-radius: 50px;
-    font-size: 16px;
-
-  }
-  .update-vacation-submit-button{
-    font-size: 16px;
-    min-width: 0;
-    padding:10px 20px;
-  }
-  .admin-oneOffs{
-    text-align: center;
-    position: relative;
-    label{
-      text-align: center;
-    }
-    .oneOff-days-input{
-      max-width: 50px;
-      padding-left: 10px;
-      padding-right:10px;
-    }
-    .oneOff-note-input{
-      max-width: 180px;
-    }
-    .submit-button{
-      padding: 12px 20px;
-      font-size: 16px;
-    }
-    th{
-      text-align: left;
-      padding: 2px 8px 2px 0;
-    }
-    th:first{
-      padding-left: 10px;
-    }
-  }
-  h2, h3, h4{
-    text-align: center;
-  }
-
-}
-
-
-.home-button{
-  min-width: 200px;
-  padding: 20px;
-  margin-bottom: 10px;
-  background: #49c5b6;
-  color: #000;
-  border-radius: 50px;
-  font-size: 20px;
-  border-color: #000;
-  -webkit-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
-
-}
-
-.home-button:hover{
-  outline: none;
-  transform: scale(1.1);
-
-}
-.home-button:active{
-  box-shadow: 0px 0px 16px 2px rgba(171, 168, 168, 0.9);
-  opacity: .8;
 
 }
 .userHome-container{
    background-color: rgba(0, 0, 0, 0.6);
-   padding: 80px 40px 20px;
+   padding: 50px 20px 20px;
    color: #e8e8e8;
    border-radius: 15px;
    margin: -50px 0 20px;
-  .details-container{
-
+   .back-button{
+      margin: -35px auto 10px;
+   }
+   .details-container{
       &.admin{
         margin-bottom: 20px;
       }
@@ -473,7 +247,7 @@ main{
     }
     .view-entry {
       background-color: rgba(0, 0, 0, 0.65);
-      padding: 0 0 25px;
+      padding: 0 10px 25px;
       .show-table{
         background-color: rgba(0, 0, 0, 0);
         margin: 0;
@@ -681,8 +455,202 @@ main{
     }
   }
 }
+
+.admin-button.home-button{
+  background-color: rgba(255, 138, 138, 0.90);
+}
+.admin-button.home-button:hover{
+  background-color: rgba(249, 43, 43, 0.87);
+}
+.admin-title{
+  padding-bottom: 35px;
+}
+.admin-container{
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 50px 40px 20px;
+  color: #e8e8e8;
+  border-radius: 15px;
+  margin: -50px 0 20px;
+  .admin-apporval{
+    margin: 0 auto;
+    max-width: 460px;
+    padding: 0px 10px 15px;
+    table{
+      margin: 5px auto 15px;
+      border-spacing: 0px;
+    }
+    .days-used{
+      text-align: center;
+    }
+    tr{
+
+    }
+    tr td:first-child{
+      border-radius: 50px 0 0 50px;
+    }
+    tr td:last-child{
+      border-radius: 0 50px 50px 0;
+
+    }
+    th{
+      vertical-align: bottom;
+      font-weight: 300;
+      border-bottom: 5px solid rgba(0, 0, 0, 0);;
+      text-align: center;
+
+    }
+    td{
+      vertical-align: middle;
+      height: 45px;
+      background-color: rgba(62, 89, 93, 0.53);
+      padding-bottom: 0px;
+      padding-left: 6px;
+      padding-right: 3px;
+      border-bottom: 4px solid rgba(0, 0, 0, 1);
+      text-align: center;
+      &.entry-note{
+        max-width: 30px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+    .td-approval{
+      text-align: center;
+      .approval-button{
+        display: inline-grid;
+        font-weight: 700;
+        margin: 0px auto 0;
+        color: rgba(43, 43, 43, 0.78);
+        background-color: $action-bkrnd;
+        border-radius: 50%;
+        border: none;
+        padding: 0px 0px 3px 0px;
+        height: 28px;
+        width: 28px;
+        .thumbsUp-icon{
+          font-size: 27px;
+          margin-top: 1px;
+        }
+      }
+    }
+    .approval-button:hover{
+      color: #fff;
+      outline: none;
+      background-color: green;
+      box-shadow: 0px 0px 11px rgba(255, 255, 255, 0.75);
+    }
+    .approval-button:active{
+      box-shadow: 0px 0px 11px rgba(255, 255, 255, 0.95);
+    }
+
+  }
+  .all-users-container{
+    background-color: rgba(79, 66, 115, 0.0);
+    background-color: rgba(0, 0, 0, .6);
+    padding: 0px 10px 15px;
+    .people-list{
+      padding: 70px 40px 30px;
+      margin: -43px auto 18px;
+      max-width: 400px;
+      list-style-type: none;
+      .home-button{
+        min-width: 200px;
+        margin-bottom: 10px;
+        color: #000;
+        -webkit-transition: all 0.2s ease-in-out;
+          transition: all 0.2s ease-in-out;
+          &:hover{
+            outline: none;
+            transform: scale(1.1);
+          }
+          &:active{
+            box-shadow: 0px 0px 16px 2px rgba(171, 168, 168, 0.9);
+            opacity: .8;
+          }
+      }
+      .people{
+        list-style: none;
+        margin: 0;
+        padding: 0px;
+      }
+    }
+    .userHome-container{
+      background-color: rgba(0, 0, 0, 0);
+      padding: 40px 0px 20px;
+    }
+  }
+
+  .admin-vacation-hours-per-year{
+    h3{
+      margin: 5px 0;
+    }
+    .vacation-hours-per-year{
+      font-size: 32px;
+      margin: 10px 0;
+    }
+    .hours-per-year-update{
+      text-align: center;
+    }
+  }
+  label{
+    display: inline-block;
+    margin: 0 8px 8px 0;
+    text-align: left;
+
+  }
+  .update-label{
+    padding-right: 6px;
+    display: block;
+    text-align: center;
+
+  }
+  .update-vacation-hours-input{
+    width: 60px;
+    text-align: center;
+    padding:10px 20px;
+    border-radius: 50px;
+    font-size: 16px;
+
+  }
+  .update-vacation-submit-button{
+    font-size: 16px;
+    min-width: 0;
+    padding:10px 20px;
+  }
+  .admin-oneOffs{
+    text-align: center;
+    position: relative;
+    label{
+      text-align: center;
+    }
+    .oneOff-days-input{
+      max-width: 50px;
+      padding-left: 10px;
+      padding-right:10px;
+    }
+    .oneOff-note-input{
+      max-width: 180px;
+    }
+    .submit-button{
+      padding: 12px 20px;
+      font-size: 16px;
+    }
+    th{
+      text-align: left;
+      padding: 2px 8px 2px 0;
+    }
+    th:first{
+      padding-left: 10px;
+    }
+  }
+  h2, h3, h4{
+    text-align: center;
+  }
+
+}
+
 .log-out-button{
-  margin-bottom: 40px;
+  margin: 20px 0;
 }
 footer{
   text-align: center;
