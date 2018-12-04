@@ -3,7 +3,7 @@ import 'whatwg-fetch';
 import Details from '../Details/Details';
 import Admin from '../Admin/Admin';
 
-class Home extends Component {
+class AllUsers extends Component {
   constructor(props) {
     super(props);
 
@@ -78,4 +78,4 @@ class Home extends Component {
 
 // <button onClick={this.newCounter}>New counter</button>
 
-export default Home;
+export default AllUsers;

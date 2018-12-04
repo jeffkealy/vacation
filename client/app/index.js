@@ -24,7 +24,6 @@ render((
           <Switch>
             <Route exact path="/" component={Login}/>
             <Route path="/admin" component={Admin}/>
-            <Route path="/home" component={Home}/>
             <Route component={NotFound}/>
           </Switch>
         </App>
