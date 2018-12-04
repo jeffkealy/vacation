@@ -32,33 +32,46 @@ componentDidMount(){
           localStorage.setItem(appTokenKey, user.uid);
           //store email
           localStorage.setItem("userEmail", user.email)
-
+          console.log("user.email", user.email);
           this.setState({
             userEmail:user.email,
             logInApproved: true
           })
+        fetch(`/api/user/${user.email}`, {method: 'PUT'})
+          .then(res => res.json())
+          .then(json => {
+            console.log("fetched user", json);
+            if (!json) {
+              this.setState({noUser:true})
+            } else if (json.admin) {
+              json.entries.sort((a,b)=>new Date(a.startDate)-new Date(b.startDate))
+              this.setState({
+                person: json
+              });
+              console.log("#####",this.state.person);
 
+              fetch(`/api/person/names`)
+              .then(res => res.json())
+              .then(json =>{
+                json.sort((a,b) => {
+                  if(a.name < b.name) { return -1; }
+                  if(a.name > b.name) { return 1; }
+                  return 0;
+                });
+                for (var i = 0; i < json.length; i++) {
+                  json[i].entries.sort((a,b)=>new Date(a.startDate)-new Date(b.startDate))
+                }
+                console.log("GET People", json);
 
-        fetch(`/api/person/names`)
-        .then(res => res.json())
-        .then(json =>{
-          json.sort((a,b) => {
-            if(a.name < b.name) { return -1; }
-            if(a.name > b.name) { return 1; }
-            return 0;
-          });
-          for (var i = 0; i < json.length; i++) {
-            json[i].entries.sort((a,b)=>new Date(a.startDate)-new Date(b.startDate))
-          }
-          console.log("GET People", json);
-
-          this.setState({
-            people:json
-          });
-        })
-      } else {
-        this.props.history.push('/')
-      }
+                this.setState({
+                  people:json
+                });
+              })
+             }
+           });
+            } else {
+              this.props.history.push('/')
+            }
   });
 
 }
@@ -136,7 +149,7 @@ render(){
           :null}
         </div>
         <AllUsers/>
-        <div>
+        <div className="logout-container">
           <Logout history={this.props.history}/>
         </div>
       </div>

@@ -129,7 +129,7 @@ class Login extends Component {
         );
         if (localStorage.getItem("userEmail")) return (
           <div>
-            <UserHome email={localStorage.getItem("userEmail")}/>
+            <UserHome email={localStorage.getItem("userEmail")} history={this.props.history}/>
             <Logout history={this.props.history}/>
 
           </div>

@@ -68,8 +68,10 @@ button{
 }
 .action-button:hover{
   box-shadow: 0px 0px 11px rgba(255, 255, 255, 0.45);
+  transform: scale(1.1);
 }
 .action-button:active{
+  background-color: #0bf6df;
   box-shadow: 0px 0px 11px rgba(255, 255, 255, 0.75);
 }
 .delete-button{
@@ -80,6 +82,9 @@ button{
   border-radius: 50%;
   border: none;
   padding: 0px 6px 2px 7px;
+  -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+
 
 }
 .delete-button:hover{
@@ -99,9 +104,20 @@ input{
   padding: 10px 20px;
   display: block;
 }
+//css by callsname
 .hidden{
   display: none;
 }
+.height-zero{
+  height: 0;
+}
+.opacity-zero{
+  opacity: 0;
+}
+.visibility-zero{
+  visibility: 0;
+}
+//
 .red-background{
   background-color: rgba(249, 43, 43, 0.67);
 }
@@ -252,15 +268,22 @@ main{
         background-color: rgba(0, 0, 0, 0);
         margin: 0;
         border: none;
-        padding: 5px 0;
+        padding: 0;
         border-radius: 50px;
+        position: relative;
+        z-index: 1;
         span{
           font-size: 24px;
         }
       }
       .arrow{
         margin-bottom: -2px;
-        padding-left: 8px
+        margin-left: 8px;
+        transition:transform 0.3s ease-out;
+        &.down{
+          transform:rotate(180deg);
+          transform-origin: center;
+        }
       }
   }
     .view-entry-table{
@@ -268,8 +291,25 @@ main{
       max-width: 450px;
       border: 1px solid rgba(255, 255, 255, 0.65);
       border-radius: 50px;
-      padding: 35px 0 30px;
+      padding: 45px 0 30px;
       margin-top: -50px ;
+      &.approved{
+        height: 0;
+        opacity: 0;
+        transition: transform .5s ease-out;
+        transform:scaleY(0);
+        transform-origin:top;
+
+        &.active{
+          transform:scaleY(1);
+          transition: transform .5s ease-out;
+          transform-origin:top;
+          height: auto;
+          opacity: 1;
+
+        }
+      }
+
       table{
         margin: 0 auto;
         max-width: 440px;
@@ -429,14 +469,6 @@ main{
       .add-entry-button{
         display: block;
         margin: 20px auto;
-        background-color:#49c5b6;
-        color: rgba(43, 43, 43, 0.78);
-        border: none;
-        padding: 20px;
-        border-radius: 50px;
-        min-width: 120px;
-        font-size: 20px;
-        font-weight: 700;
         text-transform: uppercase;
         -webkit-transition: all 0.3s ease-in-out;
           transition: all 0.3s ease-in-out;
@@ -444,7 +476,6 @@ main{
 
       }
       .add-entry-button:active{
-        background-color:#038074;
         -webkit-transition: all 0.3s ease-in-out;
           transition: all 0.3s ease-in-out;
 
@@ -464,6 +495,13 @@ main{
 }
 .admin-title{
   padding-bottom: 35px;
+}
+.admin-redirect-button{
+  color:#000;
+  background: rgba(249, 43, 43, 0.67);
+  min-width: 140px;
+  padding: 15px;
+  margin: 20px 0 10px;
 }
 .admin-container{
   background-color: rgba(0, 0, 0, 0.6);
@@ -650,8 +688,19 @@ main{
 }
 
 .log-out-button{
-  margin: 20px 0;
+  margin: 10px 0 30px;
+  // border: 1px solid rgba(43, 43, 43, 0.78);
+  box-shadow: 0px 0px 11px rgba(43, 43, 43, 0.78);
 }
+.log-out-button:hover{
+  box-shadow: 0px 0px 11px rgba(43, 43, 43, 0.98);
+
+}
+.log-out-button:active{
+  background-color: rgb(72, 181, 168);
+}
+
+
 footer{
   text-align: center;
   width: 100%;
@@ -691,4 +740,21 @@ footer{
       padding: 80px 3px 20px;
     }
   }
+}
+//anmation @keyframes
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes growAppear {
+  0%   {height: 0; opacity: 0;}
+  25%   {height: 25%; opacity: .25;}
+  50%   {height: 50%; opacity: .50;}
+  75%   {height: 75%; opacity: .75;}
+  100% {height: 100%; opacity: 1;}
+}
+/* Standard syntax */
+@keyframes growAppear {
+  0%   {height: 0; opacity: 0;}
+  25%   {height: 25%; opacity: .25;}
+  50%   {height: 50%; opacity: .50;}
+  75%   {height: 75%; opacity: .75;}
+  100% {height: 100%; opacity: 1;}
 }

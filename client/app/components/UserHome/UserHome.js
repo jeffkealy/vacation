@@ -33,7 +33,7 @@ class Details extends Component {
     this.setSubtractHalfDayHours = this.setSubtractHalfDayHours.bind(this);
     this.entryApproved = this.entryApproved.bind(this);
     this.calculateHalfDays = this.calculateHalfDays.bind(this);
-
+    this.pushToAdmin = this.pushToAdmin.bind(this);
 
 
 
@@ -42,7 +42,6 @@ class Details extends Component {
 
   componentDidMount() {
     let email = this.props.email
-
     console.log("COMPONENTDIDMOUNT", this.props.email);
     fetch(`/api/user/${email}`, {method: 'PUT'})
       .then(res => res.json())
@@ -295,6 +294,9 @@ class Details extends Component {
   entryApproved(){
     return true
   }
+  pushToAdmin(){
+    this.props.history.push('/admin')
+  }
 
   render() {
     return (
@@ -311,6 +313,11 @@ class Details extends Component {
                 :null}
               </h3>
             </div>
+            {this.state.person.admin?
+            <div>
+              <button onClick={()=>this.pushToAdmin()} className="admin-redirect-button action-button" >Admin</button>
+            </div>:null}
+
             <div className="vacation-days-details container">
               <div className="white-header">
                 <h2 className="vacation-days-details-header "> PTO Days</h2>
@@ -395,13 +402,12 @@ class Details extends Component {
               </div>
               <button onClick={()=>this.setState({hidden: !this.state.hidden})} className="show-table">
                 <h3 className="black-header">All
-                  <FaAngleDown className={this.state.hidden? "arrow hidden": "arrow"} />
-                  <FaAngleUp className={this.state.hidden? "arrow": "arrow hidden"} />
+                  <FaAngleUp className={this.state.hidden? "arrow ": "arrow down "} />
                 </h3>
               </button>
 
               {this.state.person.entries ?
-              <div className={this.state.hidden? "view-entry-table approved": "view-entry-table approved hidden"}>
+              <div className={this.state.hidden? "view-entry-table approved": "view-entry-table approved active"}>
                 <table >
                     <thead>
                       <tr>
@@ -477,7 +483,7 @@ class Details extends Component {
                   </label>
                 </div>
               </div>
-              <button onClick={this.addVacationDates}className="add-entry-button" >Add</button>
+              <button onClick={this.addVacationDates}className="add-entry-button action-button" >Add</button>
             </div>
           </div>
         :<div className={this.state.noUser? "":"hidden"}>Couldn't Retrieve User</div>}
