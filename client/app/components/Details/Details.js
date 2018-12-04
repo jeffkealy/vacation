@@ -56,6 +56,8 @@ class Details extends Component {
     //     this.hoursCalculations(json)
     //     console.log("#####",this.state.person);
     //   });
+    let person = this.props.person.entries.sort((a,b)=>new Date(a.startDate)-new Date(b.startDate));
+    console.log(person);
     this.setState({
       person: this.props.person
     },()=>{
@@ -535,7 +537,7 @@ class Details extends Component {
               </button>
 
               {this.state.person.entries ?
-              <div className={this.state.hidden? "view-entry-table approved": "view-entry-table approved hidden"}>
+              <div className={this.state.hidden? "view-entry-table approved active": "view-entry-table approved "}>
                 <table >
                     <thead>
                       <tr>

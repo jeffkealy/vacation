@@ -407,7 +407,7 @@ class Details extends Component {
               </button>
 
               {this.state.person.entries ?
-              <div className={this.state.hidden? "view-entry-table approved": "view-entry-table approved active"}>
+              <div className={this.state.hidden? "view-entry-table approved active": "view-entry-table approved "}>
                 <table >
                     <thead>
                       <tr>
