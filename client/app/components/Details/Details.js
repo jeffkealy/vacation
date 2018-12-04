@@ -56,10 +56,11 @@ class Details extends Component {
     //     this.hoursCalculations(json)
     //     console.log("#####",this.state.person);
     //   });
-    let person = this.props.person.entries.sort((a,b)=>new Date(a.startDate)-new Date(b.startDate));
+    let person = this.props.person;
+    person.entries.sort((a,b)=>new Date(a.startDate)-new Date(b.startDate))
     console.log(person);
     this.setState({
-      person: this.props.person
+      person: person
     },()=>{
       this.hoursCalculations(this.state.person)
     })
