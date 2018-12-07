@@ -3,7 +3,7 @@ import 'whatwg-fetch';
 import Calendar from 'react-calendar';
 import {FaAngleDown} from 'react-icons/fa';
 import {FaAngleUp} from 'react-icons/fa';
-
+import PTODays from '../Modules/PTODays'
 
 class Details extends Component {
   constructor(props) {
@@ -20,7 +20,8 @@ class Details extends Component {
       halfDaySubtracted: false,
       subtractHalfDayHours:0,
       entryApproved: false,
-      noUser:false
+      noUser:false,
+      key: 0
     };
     this.addVacationDates = this.addVacationDates.bind(this);
     this.dateSet = this.dateSet.bind(this);
@@ -85,6 +86,7 @@ class Details extends Component {
     }
 
   }
+
   setSubtractHalfDayHours(item){
     console.log("setSubtractHalfDayHours", item);
     if (this.state.halfDaySubtracted) {
@@ -143,11 +145,12 @@ class Details extends Component {
             person: json,
             note: "",
             showHalfDay:false,
-
+            key:this.state.key+1
           })
           this.hoursCalculations(json)
       });
   }
+
   deleteEntry(entries, i){
     const id = this.state.person._id;
     const data = {
@@ -166,12 +169,14 @@ class Details extends Component {
     .then(json => {
       json.entries.sort((a,b)=>new Date(a.startDate)-new Date(b.startDate))
       this.setState({
-        person: json
+        person: json,
+        key:this.state.key+1
       })
         console.log(json);
         this.hoursCalculations(json)
     });
   }
+
   calculateHoursUsed(person){
   if(person.entries){
     let hoursUsed = {
@@ -214,6 +219,7 @@ class Details extends Component {
      return (hoursUsed)
    } else return "Could not calculate hours"
   }
+
   hoursCalculations(person){
     if(person.name){
       let today = new Date().setHours(0,0,0,0);
@@ -301,7 +307,7 @@ class Details extends Component {
   render() {
     return (
       <>
-        <div className="userHome-container">
+        <div className="userHome-container main-container">
           {this.state.person ?
             <div className="details-container">
 
@@ -318,60 +324,16 @@ class Details extends Component {
               <button onClick={()=>this.pushToAdmin()} className="admin-redirect-button action-button" >Admin</button>
             </div>:null}
 
-            <div className="vacation-days-details container">
-              <div className="white-header">
-                <h2 className="vacation-days-details-header "> PTO Days</h2>
-              </div>
-              <div className="detail-group top">
-                <div className="detail-container used">
-                  <h4>Used </h4>
-                    <h3> {this.state.hoursUsedThisYear/8}</h3>
-                </div>
-                <div className="detail-container remaining">
-                  <h4>Remaining </h4>
-                  <h3>{this.state.daysRemainingEOY}</h3>
-                </div>
-              </div>
-              <div className="detail-group accrued">
-                <h2>Accrued</h2>
-                <div className="content">
-                  <div className="detail-containr-top">
-                    <div className="detail-container total-accrued">
-                      <h4> This year </h4>
-                      <h3> {this.state.daysAccruedThisYear}</h3>
-                    </div>
-                    <div className="detail-container total-accrued">
-                      <h4>From {new Date().getFullYear() - 1}</h4>
-                      <h3> {this.state.daysLeftFromLastYear}</h3>
-                    </div>
-                    <div className="detail-container total-accrued">
-                      <h4>By End Of Year</h4>
-                      <h3> {this.state.yearEndDaysAccrued}</h3>
-                    </div>
-                  </div>
-                  <div className="detail-container accrued monthly">
-                    <h4>Monthly </h4>
-                    <h3>  {Math.round((this.state.person.vacationHoursPerYear/8/12) * 1000) / 1000}</h3>
-                  </div>
-                  <div className="detail-container accrued annually">
-                    <h4>Annually </h4>
-                    <h3>  {this.state.person.vacationHoursPerYear/8}</h3>
-                  </div>
-                </div>
-                <div className="detail-container remaining">
-                  <h5>5 hours of PTO can be rolled over to the next year <br></br> so you'll need to use</h5>
-                  <h3>{this.state.useByEndOfYear} days</h3>
-                  <h5>by the end of the year</h5>
-                </div>
 
-              </div>
-            </div>
+            <PTODays person={this.state.person} key={this.state.key}/>
+
+
             <div className="view-entry container">
               <div className="white-header">
                 <h2>PTO Entries</h2>
               </div>
               <h3 className="black-header">Awaiting Approval</h3>
-              <div className="view-entry-table awaiting">
+              <div className="view-entry-table awaiting content">
                 <table >
                   <thead>
                       <tr>
@@ -407,7 +369,7 @@ class Details extends Component {
               </button>
 
               {this.state.person.entries ?
-              <div className={this.state.hidden? "view-entry-table approved active": "view-entry-table approved "}>
+              <div className={this.state.hidden? "view-entry-table approved active content": "view-entry-table approved content"}>
                 <table >
                     <thead>
                       <tr>
@@ -467,7 +429,7 @@ class Details extends Component {
                   <span className="hours"> {(this.state.hoursToBeUsed+this.state.subtractHalfDayHours)/8 < 0 ? 0 : (this.state.hoursToBeUsed+this.state.subtractHalfDayHours)/8}</span>
                   <span> Days</span>
                 </div>
-                <div className="add-entry-details">
+                <div className="add-entry-details content">
                   <h3>{this.state.startDate.toLocaleDateString("en-US")} </h3>
                     to
                   <h3> {this.state.endDate.toLocaleDateString("en-US")}</h3>

@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import 'whatwg-fetch';
-import {TiThumbsUp} from 'react-icons/ti';
+import {firebaseAuth} from "../Firebase/firebase";
+
 import AllUsers from '../AllUsers/AllUsers';
 import Logout from "../Logout/Logout"
-import {firebaseAuth} from "../Firebase/firebase";
+import Details from '../Details/Details';
+import {TiThumbsUp} from 'react-icons/ti';
+
 
 const firebaseAuthKey = "firebaseAuthInProgress";
 const appTokenKey = "appToken";
-
 
 
 class Admin extends Component{
@@ -15,13 +17,16 @@ class Admin extends Component{
     super(props);
 
     this.state={
-      employeeSelected:{},
-      logInApproved: false
+      logInApproved: false,
+      people: [],
+      showDetails: false,
+      showPeople: true,
+      key:0,
+      key:0
     };
-    this.handleChange = this.handleChange.bind(this);
     this.approveEntry = this.approveEntry.bind(this);
-
-
+    this.getDetails = this.getDetails.bind(this);
+    this.refreshApproval = this.refreshApproval.bind(this);
   }
 componentDidMount(){
   firebaseAuth().onAuthStateChanged(user => {
@@ -40,7 +45,6 @@ componentDidMount(){
         fetch(`/api/user/${user.email}`, {method: 'PUT'})
           .then(res => res.json())
           .then(json => {
-            console.log("fetched user", json);
             if (!json) {
               this.setState({noUser:true})
             } else if (json.admin) {
@@ -75,9 +79,10 @@ componentDidMount(){
   });
 
 }
+
 approveEntry(entry){
   let id = entry._id
-  console.log(entry);
+  console.log("approveEntry entry", entry);
   fetch(`/api/approve/${id}/`,
     { method: 'PUT',
       headers: {'Accept': 'application/json, text/plain, */*',
@@ -96,24 +101,46 @@ approveEntry(entry){
         for (var i = 0; i < json.length; i++) {
           json[i].entries.sort((a,b)=>new Date(a.startDate)-new Date(b.startDate))
         }
-        console.log("GET People", json);
         this.setState({
-          people:json
+          people:json,
+          key: this.state.key+1
         });
       })
     });
 }
-handleChange(e){
+
+getDetails(person){
+  console.log("person details", person);
   this.setState({
-    employeeSelected: this.props.people[e]
+    showDetails: true,
+    showPeople: false,
+    person: person
   })
 }
 
+refreshApproval(){
+  console.log("refreshApproval");
+  fetch(`/api/person/names`)
+  .then(res => res.json())
+  .then(json =>{
+    json.sort((a,b) => {
+      if(a.name < b.name) { return -1; }
+      if(a.name > b.name) { return 1; }
+      return 0;
+    });
+    for (var i = 0; i < json.length; i++) {
+      json[i].entries.sort((a,b)=>new Date(a.startDate)-new Date(b.startDate))
+    }
+    this.setState({
+      people:json
+    });
+  })
+}
 render(){
   return(
     <>
       {this.state.logInApproved?
-        <div className="admin-container ">
+        <div className="admin-container main-container ">
         <h1 className="admin-title">Admin</h1>
         <div className="admin-apporval container">
           <div className="white-header">
@@ -148,7 +175,30 @@ render(){
           </table>
           :null}
         </div>
-        <AllUsers/>
+        <div className="all-users-container container">
+          <div className={this.state.showPeople ? 'people-title white-header' :'hidden'}><h2>People</h2></div>
+          <ul className={this.state.showPeople ? 'people-list' :'hidden' }>
+            {[].concat(this.state.people).sort((a,b)=>a.peopleM > b.peopleM).map((people, i) => (
+                <li key={i} className='people'>
+                  <button onClick={() => this.getDetails(people)} className="home-button action-button">{this.state.people[i].name}</button>
+                </li>
+              ))}
+
+          </ul>
+          {this.state.showDetails ?
+            <div className="userHome-container">
+              <button className="back-button action-button" onClick={() => this.setState({showDetails: false, showPeople:true})}>Back</button>
+              <Details
+                person={this.state.person}
+                people={this.state.people}
+                email={this.state.person.email}
+                key={this.state.key}
+                refreshApproval={this.refreshApproval}
+                />
+            </div>
+            : null
+          }
+        </div>
         <div className="logout-container">
           <Logout history={this.props.history}/>
         </div>
@@ -160,3 +210,6 @@ render(){
 }
 
 export default Admin;
+
+
+// <AllUsers key={this.state.key}/>

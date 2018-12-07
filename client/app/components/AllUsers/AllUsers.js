@@ -11,8 +11,6 @@ class AllUsers extends Component {
       people: [],
       showDetails: false,
       showPeople: true,
-      monthlyAccrualAdded: false,
-      updateHours: []
     };
     this.getDetails = this.getDetails.bind(this);
   }
@@ -38,7 +36,6 @@ class AllUsers extends Component {
     this.setState({
       showDetails: true,
       showPeople: false,
-      showAdmin: false,
       person: person
     })
   }
@@ -59,7 +56,7 @@ class AllUsers extends Component {
         </ul>
         { this.state.showDetails ?
             <div className="userHome-container">
-              <button className="back-button action-button" onClick={() => this.setState({showDetails: false, showPeople:true, showAdmin:false})}>Back</button>
+              <button className="back-button action-button" onClick={() => this.setState({showDetails: false, showPeople:true})}>Back</button>
               <Details person={this.state.person} people={this.state.people} email={this.state.person.email}/>
             </div>
             : null

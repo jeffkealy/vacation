@@ -3,30 +3,45 @@
 @import url('vendor/normalize');
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,700');
 
-$action-bkrnd: #49c5b6;
+$action-bkrnd: #00e5a5;
 
 textarea, select, input, button { outline: none; }
 h3,h4{
   font-weight: inherit;
 }
 .container{
-  background-color: rgba(0, 0, 0, 0.65);
+  background-color: rgba(0, 0, 0, 0.9);
   border-radius: 40px;
   border:1px solid #fff;
   margin: 54px auto 0;
   padding: 0px 20px 15px;
+  box-shadow: 0px 0px 11px 1px rgba(0, 0, 0, 0.7);
+  color: #e8e8e8;
+
 
 }
+.main-container{
+  background-color: #fefefe;
+  background-color:rgba(255, 255, 255, 0.95);
+  padding: 50px 20px 20px;
+  color: #000;
+  border-radius: 15px;
+  margin: -50px 0 20px;
+  box-shadow: 0px 2px 42px 4px rgba(0, 0, 0, 0.68);
+
+}
+
 .content{
-  margin: -50px 0 10px 0;
+  margin: -50px 0 10px;
   border: 1px solid rgba(255, 255, 255, 0.65);
+  background-color: rgba(0, 32, 78, 1);
   padding: 35px 0 30px;
   border-radius: 50px;
 }
 .white-header{
   margin: -35px auto 10px;
   text-align: center;
-  h2, h3{
+  h2{
     color: #000;
     padding: 20px;
     background-color: #fff;
@@ -34,6 +49,8 @@ h3,h4{
     display: inline-block;
     font-weight: 700;
     margin: 0;
+    border: 1px solid #000;
+    box-shadow: 0px -5px 30px -5px #000;
   }
 }
 .black-header{
@@ -54,11 +71,12 @@ button{
   -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
 }
 .action-button{
-  background-color:#49c5b6;
+  background-color:#00e5a5;
   color: rgba(43, 43, 43, 0.78);
   border: none;
   padding: 20px;
   border-radius: 50px;
+  border: 1px solid #02b77e;
   min-width: 120px;
   font-size: 20px;
   font-weight: 700;
@@ -124,29 +142,41 @@ input{
 :focus{
   outline: none;
 }
+
+
+///////body///////
+
 body{
-  background-color: rgb(156, 219, 232);
+  background-color: #00e7c3;
   // background-color: rgb(195, 224, 195);
-  background:  url(../../public/assets/img/vacation.jpg);
-  background-size: auto;
+  background:  url(../../public/assets/img/backgroundTriangles.jpg);
+  background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
   font-family: 'Montserrat', sans-serif;
 }
+//title
 header{
   text-align: center;
-  padding: 50px 0 30px;
+  padding: 50px 0 0px;
   a{
     text-decoration: none;
-    color: #000;
-    font-size: 33px;
-    border: 1px solid rgba(255, 255, 255, 0.65);
-    margin: 10px 0 0;
-    padding: 20px;
-    border-radius: 50px;
-    background-color: #fff;
-
-
+    font-size: 30px;
+  }
+  .white-header{
+    // background-color:  #eaeaea;
+    // padding: 5px 0 0 0;
+    h2{
+      // background-color: #5CE4C8;
+      // background:linear-gradient( to right, #eaeaea , rgba(0, 229, 165,0) 7% , rgba(0, 229, 165,0) 93%, #eaeaea), linear-gradient( to bottom, #eaeaea , #00e5a5 27% , #00e5a5 65%, #eaeaea);
+      background-color: #00eaa0;
+      background-image:linear-gradient( to bottom, rgba(0, 229, 165, 1) 70% ,rgba(234, 234, 234,0) 70%,),linear-gradient( 42deg, rgba(234, 234, 234,1) 50% ,rgba(255, 255, 255,1) 50%,), url(../../public/assets/img/backgroundTriangles-header.png),linear-gradient( to bottom, #00e5a5 70% , #fff 70%, );
+      background-size: cover;
+      background-position: bottom right;
+      color: #fff;
+      text-shadow: 1px 2px 6px #000;
+      border: 2px solid rgba(0,0,0,0.57);
+    }
   }
 }
 
@@ -168,24 +198,10 @@ main{
   }
 
 }
-.userHome-container{
-   background-color: rgba(0, 0, 0, 0.6);
-   padding: 50px 20px 20px;
-   color: #e8e8e8;
-   border-radius: 15px;
-   margin: -50px 0 20px;
-   .back-button{
-      margin: -35px auto 10px;
-   }
-   .details-container{
-      &.admin{
-        margin-bottom: 20px;
-      }
-      .details{
-        margin-bottom: 20px;
-        transition: all 200ms ease-out;
 
-      }
+//userHome
+.userHome-container{
+    .details-container{
       .details-title{
         display: inline-block;
         margin-block-start: 0;
@@ -197,17 +213,19 @@ main{
         }
       }
 
-    .back-button:active{
-      background-color:#038074;
+    .admin-redirect-button{
+      color:#fefefe;
+      background: #a90306;
+      min-width: 140px;
+      padding: 15px;
+      margin: 20px 0 10px;
+      box-shadow: 0px 0px 8px #000;
+      text-shadow: 1px 1px 1px #000;
+      border: 1px solid #5e0204;
     }
-
     .vacation-days-details{
-      padding: 0px 0 15px;
+      padding-bottom: 15px;
       border: 1px solid #fff;
-
-      .vacation-days-details-header{
-
-      }
       .detail-group.top{
         text-align: center;
         .detail-container{
@@ -227,17 +245,9 @@ main{
         }
       }
       .detail-group.accrued{
-        margin: 5px 20px;
+        margin: 5px auto;
         padding: 0 0 0px;
         h2{
-          background: #000;
-          padding: 17px 20px;
-          display: inline-block;
-          min-width: 138px;
-          border-radius: 50px;
-          border: 1px solid rgba(255, 255, 255, 0.65);
-          font-size: 20px;
-          margin-bottom: 20px;
         }
         .detail-container{
           display: inline-block;
@@ -262,7 +272,6 @@ main{
       }
     }
     .view-entry {
-      background-color: rgba(0, 0, 0, 0.65);
       padding: 0 10px 25px;
       .show-table{
         background-color: rgba(0, 0, 0, 0);
@@ -496,22 +505,8 @@ main{
 .admin-title{
   padding-bottom: 35px;
 }
-.admin-redirect-button{
-  color:#000;
-  background: rgba(249, 43, 43, 0.67);
-  min-width: 140px;
-  padding: 15px;
-  margin: 20px 0 10px;
-}
 .admin-container{
-  background-color: rgba(0, 0, 0, 0.6);
-  padding: 50px 40px 20px;
-  color: #e8e8e8;
-  border-radius: 15px;
-  margin: -50px 0 20px;
   .admin-apporval{
-    margin: 0 auto;
-    max-width: 460px;
     padding: 0px 10px 15px;
     table{
       margin: 5px auto 15px;
@@ -583,8 +578,6 @@ main{
 
   }
   .all-users-container{
-    background-color: rgba(79, 66, 115, 0.0);
-    background-color: rgba(0, 0, 0, .6);
     padding: 0px 10px 15px;
     .people-list{
       padding: 70px 40px 30px;
